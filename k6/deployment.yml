@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k6-load-deployment
+  labels:
+    app: k6-load
+spec:
+  selector:
+    matchLabels:
+      app: k6-load
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: k6-load
+    spec:
+      containers:
+        - name: k6
+          image: grafana/k6:0.41.0
+          command: ["k6", "run", "--out", "csv", "/d/script.js"]
+          env:
+            - name: "SCRIPT_URL"
+              value: "http://nginx:80" # TODO URL donde conectarse
+            - name: "K6_VUS"
+              value: "2"
+            - name: "K6_DURATION"
+              value: "3s"
+            - name: "K6_CSV_FILENAME"
+              value: /d/out/results.csv
+          volumeMounts:
+            - mountPath: /d/out
+              name: k6-csv
+            - mountPath: /d/script.js
+              name: k6-script
+      volumes:
+        - name: k6-csv
+          hostPath:
+            path: /lambda/k6/out
+            type: DirectoryOrCreate
+        - name: k6-script
+          hostPath:
+            path: /lambda/k6/script.js
+            type: File

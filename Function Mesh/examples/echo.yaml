@@ -1,0 +1,28 @@
+apiVersion: compute.functionmesh.io/v1alpha1
+kind: Function
+metadata:
+  name: python-function-sample
+  namespace: default
+spec:
+  image: streamnative/pulsar-functions-python-runner:2.7.1 # using python function runner
+  className: exclamation_function.ExclamationFunction
+  forwardSourceMessageProperty: true
+  maxPendingAsyncRequests: 1000
+  replicas: 1
+  maxReplicas: 5
+  logTopic: persistent://public/default/logging-function-logs
+  input:
+    topics:
+      - persistent://public/default/python-function-input-topic
+    typeClassName: java.lang.String
+  output:
+    topic: persistent://public/default/python-function-output-topic
+    typeClassName: java.lang.String
+  pulsar:
+    pulsarConfig: "test-pulsar"
+  python:
+    py: exclamation_function.py
+    pyLocation: ""
+    # use package name:
+    # pyLocation: function://public/default/nul-py-test-function@v1
+  # to be delete & use admission hook

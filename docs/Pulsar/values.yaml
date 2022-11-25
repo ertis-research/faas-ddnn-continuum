@@ -1,0 +1,10 @@
+initialize: true
+volumes:
+  persistence: false
+
+broker:
+  configData:
+    enablePackagesManagement: "true"
+    packagesManagementStorageProvider: "org.apache.pulsar.packages.management.storage.bookkeeper.BookKeeperPackagesStorageProvider"
+    packagesReplicas: "1"
+    packagesManagementLedgerRootPath: "/ledgers"

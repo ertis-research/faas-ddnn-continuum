@@ -64,13 +64,7 @@ La instalación de Apache Pulsar se realiza a través de `helm`
 helm repo add apache https://pulsar.apache.org/charts
 helm repo update
 # Nota: Puede tardar mucho tiempo
-helm install pulsar apache/pulsar \
-  --timeout 20m \
-  --namespace pulsar \
-  # Inicializar el volumen
-  --set initialize=true \
-  # Desactivar la persistencia de datos. Consultar documentación
-  --set volumes.persistence=false
+helm install pulsar apache/pulsar --timeout 20m --namespace pulsar -f values.yaml
 ```
 
 # Pulsar CLI Tools
@@ -97,6 +91,8 @@ export PULSAR_HOME=<PATH_APACHE_PULSAR_INFLATED_TARBAL_DIR>
 ```
 
 ## Configuración de las CLI tools
+
+### Configurar el acceso al cluster de Pulsar
 
 Dentro de la carpeta `$PULSAR_HOME/conf`, existe un fichero `client.conf` que
 permite configurar las opciones de conexión de las CLI tools
@@ -151,4 +147,18 @@ Events:                   <none>
 
 ```sh
 bin/pulsar-admin tenants list
+```
+
+3. Verificar que se pueden crear funciones de Pulsar:
+   https://pulsar.apache.org/docs/next/getting-started-helm/#step-2-use-pulsar-admin-to-create-pulsar-tenantsnamespacestopics
+
+4. Instalar un conector para generar datos en los topics:
+   https://pulsar.apache.org/docs/2.10.x/io-use/
+
+---
+
+# Borrar el servicio
+
+```sh
+helm uninstall pulsar -n pulsar
 ```

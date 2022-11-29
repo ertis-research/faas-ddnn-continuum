@@ -1,0 +1,19 @@
+# Las opciones de configuración están disponibles en https://docs.openfaas.com/reference/yaml/
+version: 1.0
+provider:
+  name: openfaas
+  # Dirección donde desplegar la función. No es necesario si `faas-cli` está
+  # configurado
+  # gateway: http://127.0.0.1:8080
+functions:
+  echo-py:
+    lang: python
+    handler: ./echo-py
+    # La imagen del contenedor debe ser accesible desde todos los nodos, por
+    # lo que debe estar en un registry accesible desde todos los nodos.
+    #
+    # Esta dirección IP corresponde a uno de los nodos del cluster donde hay
+    # desplegado un contenedor `registry`
+    #
+    # Más información: https://docs.docker.com/registry/
+    image: "10.10.32.232:5000/echo-py:latest"

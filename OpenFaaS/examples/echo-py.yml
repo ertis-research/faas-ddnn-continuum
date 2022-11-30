@@ -1,3 +1,4 @@
+# curl -X POST http://node3:31112/function/echo-py -d 'hello world'
 # Las opciones de configuración están disponibles en https://docs.openfaas.com/reference/yaml/
 version: 1.0
 provider:

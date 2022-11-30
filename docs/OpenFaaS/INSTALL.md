@@ -25,8 +25,8 @@ helm upgrade openfaas --install openfaas/openfaas \
   --namespace openfaas  \
   --set functionNamespace=openfaas-fn \
   --set generateBasicAuth=true
-# Obtener la contraseña generada
-PASSWORD=$(kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode) && \
+# Obtener la contraseña generada (usuario admin)
+PASSWORD=$(kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode)
 echo "OpenFaaS admin password: $PASSWORD"
 # Obtener la IP y puerto del gateway
 kubectl get svc -n openfaas gateway-external -o wide

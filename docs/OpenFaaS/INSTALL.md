@@ -1,15 +1,3 @@
-# faas-cli
-
-> Las instalaciones originales están disponibles aquí:
-> https://docs.openfaas.com/cli/install/#linux-or-macos
-
-```sh
-curl -sSL https://cli.openfaas.com | sudo -E sh
-faas-cli version
-# Opcional: Añadir autocompletado
-echo 'source <(faas-cli completion --shell bash)' >>~/.bashrc
-```
-
 # OpenFaaS
 
 > Las instalaciones originales están disponibles aquí:
@@ -25,6 +13,16 @@ helm upgrade openfaas --install openfaas/openfaas \
   --namespace openfaas  \
   --set functionNamespace=openfaas-fn \
   --set generateBasicAuth=true
+```
+
+# faas-cli
+
+> Las instalaciones originales están disponibles aquí:
+> https://docs.openfaas.com/cli/install/#linux-or-macos
+
+```sh
+# Descargar el CLI
+curl -sSL https://cli.openfaas.com | sudo -E sh
 # Obtener la contraseña generada (usuario admin)
 PASSWORD=$(kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode)
 echo "OpenFaaS admin password: $PASSWORD"
@@ -36,6 +34,9 @@ export OPENFAAS_URL=<HOST>:<PORT>
 echo -n $PASSWORD | faas-cli login -g $OPENFAAS_URL -u admin --password-stdin
 # Comprobar que el servicio está disponible
 faas-cli version
+
+# Opcional: Añadir autocompletado
+echo 'source <(faas-cli completion --shell bash)' >>~/.bashrc
 ```
 
 <details>
@@ -67,3 +68,9 @@ Provider
 ```
 
 </details>
+
+# Dar de baja el servicio
+
+```sh
+helm uninstall openfaas -n openfaas
+```

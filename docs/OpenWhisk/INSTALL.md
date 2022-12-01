@@ -1,6 +1,3 @@
-OpenWhisk tiene 2 componentes bien diferenciados que deben ser instalados por
-separado
-
 # OpenWhisk K8s
 
 > Las instrucciones originales están disponibles en
@@ -64,10 +61,11 @@ sudo mv ./wsk /usr/local/bin/wsk
 
 # Configuración del CLI
 
-# kubectl get service -n openwhisk
-# El puerto de la derecha es el bueno (correspondiente a 443)
+# Obtener el puerto correspondiente a 443 (HTTPs)
+kubectl get service -n openwhisk
+# Configurar el CLI
 wsk property set --apihost <whisk.ingress.apiHostName>:<whisk.ingress.apiHostPort>
-# Clave por defecto `whisk.auth.guest`
+# Clave `whisk.auth.guest`
 wsk property set --auth 23bc46b1-71f6-4ed5-8c54-816aa4f8c502:123zO3xZCLrMN6v2BKK1dXYFpXlPkccOFqm12CdAsMgRU4VrNZ9lyGVCGuMDGIwP
 ```
 

@@ -46,7 +46,7 @@ fission function test --name hello-js
 ```sh
 helm upgrade --install ingress-nginx ingress-nginx \
   --repo https://kubernetes.github.io/ingress-nginx \
-  --namespace fission
+  --namespace ingress-nginx --create-namespace
 ```
 
 # Dar de baja el servicio

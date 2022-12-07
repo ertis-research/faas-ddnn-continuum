@@ -1,3 +1,12 @@
+# KEDA
+
+```sh
+helm repo add kedacore https://kedacore.github.io/charts
+helm repo update
+kubectl create namespace keda
+helm install keda kedacore/keda --namespace keda
+```
+
 # Fission service
 
 > Las instrucciones originales están disponibles aquí:
@@ -10,7 +19,7 @@ kubectl create namespace $FISSION_NAMESPACE
 kubectl create -k "github.com/fission/fission/crds/v1?ref=v1.17.0"
 helm repo add fission-charts https://fission.github.io/fission-charts/
 helm repo update
-helm install --version v1.17.0 --namespace $FISSION_NAMESPACE fission fission-charts/fission-all
+helm install --version v1.17.0 -f values.yaml --namespace $FISSION_NAMESPACE fission fission-charts/fission-all
 ```
 
 # Fission CLI
@@ -56,7 +65,7 @@ helm upgrade --install ingress-nginx ingress-nginx \
 > Las instrucciones completas se encuentran aquí:
 > https://fission.io/docs/installation/uninstallation/
 
-````sh
+```sh
 helm uninstall fission -n fission
 kubectl delete -k "github.com/fission/fission/crds/v1?ref=v1.17.0"
 ```
@@ -65,4 +74,4 @@ kubectl delete -k "github.com/fission/fission/crds/v1?ref=v1.17.0"
 
 ```sh
 helm uninstall ingess-nginx -n fission
-````
+```

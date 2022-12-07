@@ -32,7 +32,7 @@ Para más información, consultar los siguientes enlaces
 - Ejemplos de configuración:
   https://github.com/apache/openwhisk-deploy-kube/blob/master/deploy
 - Opciones de configuración:
-  https://github.com/apache/openwhisk-deploy-kube/blob/master/docs/k8s-diy.md
+  https://github.com/apache/openwhisk-deploy-kube/blob/master/docs/configurationChoices.md
 - Valores por defecto:
   https://github.com/apache/openwhisk-deploy-kube/blob/master/helm/openwhisk/values.yaml
 

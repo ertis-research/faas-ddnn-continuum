@@ -1,7 +1,26 @@
-# OpenFaaS
+Este documento sirve como guía de instalación de los componentes necesarios en
+un cluster de Kubernetes para poder lanzar funciones serverless a través del
+framework [OpenFaaS]
+
+Los comandos de la guía están pensados para ser ejecutados en la carpeta actual
+(`docs/OpenFaaS`), a no ser que se indique lo contrario
+
+# OpenFaaS K8s
+
+Instrucciones para la instalación de la plataforma OpenFaaS en un cluster de
+Kubernetes.
 
 > Las instalaciones originales están disponibles aquí:
 > https://docs.openfaas.com/deployment/kubernetes/#2-deploy-the-openfaas-chart-with-helm
+
+## Requisitos
+
+- Cluster de Kubernetes
+- [Helm]
+
+## Instrucciones
+
+> Estos comandos han sido probados en el nodo master (nodo1) en el cluster
 
 ```sh
 # Crear los namespaces necesarios
@@ -16,6 +35,10 @@ helm upgrade openfaas --install openfaas/openfaas \
 ```
 
 # faas-cli
+
+Instalación del CLI para gestionar un servicio OpenFaaS. Estas instrucciones
+estan pensadas para instalar el CLI en un sistema Linux x64. Para otros sistemas
+operativos, visite las instrucciones originales
 
 > Las instalaciones originales están disponibles aquí:
 > https://docs.openfaas.com/cli/install/#linux-or-macos
@@ -39,8 +62,26 @@ faas-cli version
 echo 'source <(faas-cli completion --shell bash)' >>~/.bashrc
 ```
 
+# Desinstalar OpenFaaS
+
+## OpenFaaS K8s
+
+```sh
+helm uninstall openfaas -n openfaas
+```
+
+## faas-cli
+
+```sh
+rm `which faas-cli`
+```
+
+# Comprobar que el servicio funciona
+
+Nos basta con obtener la versión del CLI. `faas-cli version`
+
 <details>
-<summary>`faas-cli version`</summary>
+<summary>Output</summary>
 
 ```txt
   ___                   _____           ____
@@ -69,8 +110,5 @@ Provider
 
 </details>
 
-# Dar de baja el servicio
-
-```sh
-helm uninstall openfaas -n openfaas
-```
+[helm]: https://helm.sh/
+[openfaas]: https://www.openfaas.com/

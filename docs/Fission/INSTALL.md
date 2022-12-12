@@ -75,7 +75,7 @@ kubectl delete -k "github.com/fission/fission/crds/v1?ref=v1.17.0"
 ## Fission CLI
 
 ```sh
-rm `where fission`
+rm `which fission`
 ```
 
 ---

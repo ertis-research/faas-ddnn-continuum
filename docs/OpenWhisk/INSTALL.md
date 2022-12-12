@@ -1,9 +1,31 @@
+Este documento sirve como guía de instalación de los componentes necesarios en
+un cluster de Kubernetes para poder lanzar funciones serverless a través del
+framework [OpenWhisk]
+
+Los comandos de la guía están pensados para ser ejecutados en la carpeta actual
+(`docs/OpenWhisk`), a no ser que se indique lo contrario
+
 # OpenWhisk K8s
+
+Instrucciones para la instalación de la plataforma Fission en un cluster de
+Kubernetes. Esta guía activa las siguientes funciones extras:
+
+- Configura el nodo master
+- Desactiva la persistencia de datos
+- Cambia el DNS resolver por [CoreDNS] (`coredns.kube-system`)
+- Desactiva Node Affinity
 
 > Las instrucciones originales están disponibles en
 > https://github.com/apache/openwhisk-deploy-kube/blob/master/README.md#overview
 
-## Configurar los nodos
+## Requisitos
+
+- Cluster de Kubernetes
+- [Helm]
+
+## Instrucciones
+
+### Configurar los nodos
 
 Es necesario indicar que nodos van a ser utilizados para lanzar funciones y
 cuales usados para lanzar los elementos de control (couchdb, kafka, ...)
@@ -22,7 +44,7 @@ kubectl label node <INVOKER_NODE_NAME> openwhisk-role=<ROLE>
 kubectl label node <INVOKER_NODE_NAME> openwhisk-role-
 ```
 
-## Elegir los valores de la configuración
+### Elegir los valores de la configuración
 
 Para configurar el despliegue realizado por Helm, será necesario proporcionar un
 fichero `values.yaml` con las opciones de configuración pertinentes
@@ -36,7 +58,7 @@ Para más información, consultar los siguientes enlaces
 - Valores por defecto:
   https://github.com/apache/openwhisk-deploy-kube/blob/master/helm/openwhisk/values.yaml
 
-## Lanzar el servicio
+### Lanzar el servicio
 
 ```sh
 helm repo add openwhisk https://openwhisk.apache.org/charts
@@ -45,10 +67,22 @@ helm repo update
 helm install owdev openwhisk/openwhisk -n openwhisk -f values.yaml --create-namespace
 ```
 
-# CLI
+# wsk
+
+Instalación del CLI para gestionar un servicio OpenWhisk. Estas instrucciones
+estan pensadas para instalar el CLI en un sistema Linux x64. Para otros sistemas
+operativos, visite las instrucciones originales
 
 > Las instrucciones originales están disponibles en
 > https://openwhisk.apache.org/documentation.html#wsk-cli
+
+## Requisitos
+
+- Java JDK 17+
+
+## Instrucciones
+
+> Estos comandos han sido probados en el nodo master (nodo1) del cluster
 
 ```sh
 # Descargar la ultima versión del CLI para nuestro sistema desde
@@ -69,7 +103,23 @@ wsk property set --apihost <whisk.ingress.apiHostName>:<whisk.ingress.apiHostPor
 wsk property set --auth 23bc46b1-71f6-4ed5-8c54-816aa4f8c502:123zO3xZCLrMN6v2BKK1dXYFpXlPkccOFqm12CdAsMgRU4VrNZ9lyGVCGuMDGIwP
 ```
 
-# Errores comunes de la instalación
+# Desinstalar OpenWhisk
+
+## OpenWhisk K8s
+
+```sh
+helm uninstall owdev -n openwhisk
+```
+
+## wsk
+
+```sh
+rm `which wsk`
+```
+
+---
+
+# Troubleshooting
 
 Lista completa:
 https://github.com/apache/openwhisk-deploy-kube/blob/master/docs/troubleshooting.md
@@ -122,8 +172,6 @@ solucionarlo, basta con sustituir el valor de `k8s.dns` a `coredns.kube-system`
 - https://github.com/apache/openwhisk-deploy-kube/blob/master/docs/troubleshooting.md#nginx-pod-fails-with-host-not-found-in-resolver-error
 - https://github.com/apache/openwhisk-deploy-kube/issues/303#issuecomment-431287388
 
-# Dar de baja el servicio
-
-```sh
-helm uninstall owdev -n openwhisk
-```
+[openwhisk]: https://openwhisk.apache.org/
+[coredns]: https://coredns.io/
+[helm]: https://helm.sh/

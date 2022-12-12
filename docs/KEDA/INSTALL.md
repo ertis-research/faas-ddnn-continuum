@@ -11,7 +11,7 @@ Los comandos de la guía están pensados para ser ejecutados en la carpeta actua
 
 # Instrucciones
 
-> Estos comandos han sido probados en el nodo master (nodo1) en el cluster
+> Estos comandos han sido probados en el nodo master (nodo1) del cluster
 
 ```sh
 helm repo add kedacore https://kedacore.github.io/charts

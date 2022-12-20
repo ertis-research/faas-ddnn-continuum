@@ -4,13 +4,15 @@ services:
   k6:
     environment:
       "SCRIPT_URL": "http://nginx:80"
-      "K6_VUS": "2"
-      "K6_DURATION": "3s"
+      SCRIPT_SLEEP_FOR: 5 #3_600 # 1 hour
+      SCRIPT_DATASET: "/d/payloads.json"
+      "K6_VUS": "1"
       "K6_CSV_FILENAME": /d/out/results.csv
     image: grafana/k6:0.41.0
     command: run --out csv /d/script.js
     volumes:
       - "${PWD}/script.js:/d/script.js"
+      - "${PWD}/payloads/test.json:/d/payloads.json"
       - "${PWD}/out/:/d/out"
     depends_on:
       - nginx

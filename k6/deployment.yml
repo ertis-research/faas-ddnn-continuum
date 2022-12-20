@@ -20,11 +20,13 @@ spec:
           command: ["k6", "run", "--out", "csv", "/d/script.js"]
           env:
             - name: "SCRIPT_URL"
-              value: "http://nginx:80" # TODO URL donde conectarse
+              value: "http://gateway-external.openfaas.svc.cluster.local:8080/function/echo-py" # TODO URL donde conectarse
+            - name: SCRIPT_DATASET
+              value: "/d/payloads.json"
             - name: "K6_VUS"
-              value: "2"
-            - name: "K6_DURATION"
-              value: "3s"
+              value: "1"
+            - name: SCRIPT_SLEEP_FOR
+              value: "1"
             - name: "K6_CSV_FILENAME"
               value: /d/out/results.csv
           volumeMounts:
@@ -32,6 +34,8 @@ spec:
               name: k6-csv
             - mountPath: /d/script.js
               name: k6-script
+            - mountPath: /d/payloads.json
+              name: k6-payloads
       volumes:
         - name: k6-csv
           hostPath:
@@ -41,3 +45,8 @@ spec:
           hostPath:
             path: /lambda/k6/script.js
             type: File
+        - name: k6-payloads
+          hostPath:
+            path: /lambda/k6/payloads.json
+            type: File
+    nodeName: node1

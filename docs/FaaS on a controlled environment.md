@@ -42,7 +42,7 @@ notas:
     - Rendimiento
     - Triggers
     - Features diferenciadoras
-    -
+  - Deberían ser minimo 6 páginas del template
 
 -->
 
@@ -72,12 +72,33 @@ for most stars of any installable serverless platform in GitHub, with over 22k
 stars. OpenFaaS also offers a paid version, OpenFaaS Pro, which builds upon the
 open source project to deliver some additional features and commercial support
 
+## Installation
+
 The platform can be deployed to any certified Kubernetes distribution or a
 single host. For our purposes, we decided to deploy the full OpenFaaS platform
 on a Kubernetes cluster. The platform can be installed using Helm or Arkade
-charts, allowing for customization on the installation. OpenFaaS also provides a
-CLI, a single available for Linux, Windows and macOS. It provides tools for both
-developing and managing functions, as well as the stack itself.
+charts, allowing for customization on the installation.
+
+The installation guide also provides instructions on how to install `faas-cli`,
+a Command Line Interface (CLI) for managing functions on Linux, Windows and
+macOS
+
+<!--TODO More information about the CLI-->
+
+## Developing OpenFaaS functions
+
+`faas-cli` provides tools for both developing and managing functions, as well as
+the OpenFaaS Gateway itself.
+
+OpenFaaS has the concept of _templates_,
+
+<!-- TODO: Explore more the idea of templates -->
+
+<!--
+OpenFaaS also provides a CLI, a single available for Linux, Windows and macOS.
+It provides tools for both developing and managing functions, as well as the
+stack itself.
+-->
 
 # Fission
 
@@ -88,14 +109,20 @@ of running containers with a small dynamic loader ready to launch functions.
 This allows for functions to start immediately, reducing the latencies for cold
 starts
 
+## Installation
+
 Fission can be installed using Helm charts or Kubernetes objects, although Helm
 allows more features to be enabled. This is important, as the base Fission
 installation only includes the core components required for developing and
 testing functions. This results on a smaller control plane, but requires the
 operator to enable each feature individually. For example, the Kafka event
 trigger requires KEDA installed on the cluster, as well as enabling the KEDA
-integration on Fission. The platform also provides a CLI for developing and
-managing functions, a single binary available for Linux, Windows and macOS.
+integration on Fission.
+
+The installation guide also provides instructions on how to install `fission`,
+the CLI for managing functions on Linux, Windows and macOS
+
+<!--TODO More information about the CLI-->
 
 # OpenWhisk
 
@@ -103,6 +130,8 @@ A serverless platform from the Apache foundation, licensed under the Apache 2.0
 license. It has the least amount of stars on GitHub of all three platforms, with
 5.9k, but it offers some interesting features not available on neither Fission
 or OpenFaaS
+
+## Installation
 
 It can be installed through Docker, Kubernetes, Vagrant or directly on a host
 machine

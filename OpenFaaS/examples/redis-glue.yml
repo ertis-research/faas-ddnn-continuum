@@ -1,0 +1,12 @@
+version: 1.0
+provider:
+  name: openfaas
+  # gateway: http://127.0.0.1:8080
+functions:
+  redis-glue:
+    lang: python3-flask
+    handler: ./redis-glue
+    image: "10.10.32.232:5000/redis-glue:latest"
+    environment:
+      FUNCTION_REDIS_HOSTNAME: redis-serverless-service.default.svc.cluster.local
+      FUNCTION_REDIS_PORT: 6379

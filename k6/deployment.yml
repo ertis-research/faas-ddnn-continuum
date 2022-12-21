@@ -14,6 +14,7 @@ spec:
       labels:
         app: k6-load
     spec:
+      nodeName: node1
       containers:
         - name: k6
           image: grafana/k6:0.41.0
@@ -49,4 +50,3 @@ spec:
           hostPath:
             path: /lambda/k6/payloads.json
             type: File
-    nodeName: node1

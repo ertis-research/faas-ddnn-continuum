@@ -21,7 +21,7 @@ spec:
           command: ["k6", "run", "--out", "csv", "/d/script.js"]
           env:
             - name: "SCRIPT_URL"
-              value: "http://gateway-external.openfaas.svc.cluster.local:8080/function/echo-py" # TODO URL donde conectarse
+              value: "http://gateway-external.openfaas.svc.cluster.local:8080/function/echo"
             - name: SCRIPT_DATASET
               value: "/d/payloads.json"
             - name: "K6_VUS"
@@ -29,7 +29,7 @@ spec:
             - name: SCRIPT_SLEEP_FOR
               value: "1"
             - name: "K6_CSV_FILENAME"
-              value: /d/out/results.csv
+              value: /d/out/results-openfaas-echo.csv
           volumeMounts:
             - mountPath: /d/out
               name: k6-csv
@@ -44,9 +44,9 @@ spec:
             type: DirectoryOrCreate
         - name: k6-script
           hostPath:
-            path: /lambda/k6/script.js
+            path: /lambda/k6/script-sleep.js
             type: File
         - name: k6-payloads
           hostPath:
-            path: /lambda/k6/payloads.json
+            path: /lambda/k6/payloads/precio-energias-de-balance.json
             type: File

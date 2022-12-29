@@ -8,8 +8,8 @@ provider:
   # gateway: http://127.0.0.1:8080
 functions:
   echo-py:
-    lang: python
-    handler: ./echo-py
+    lang: python3-flask
+    handler: ./echo
     # La imagen del contenedor debe ser accesible desde todos los nodos, por
     # lo que debe estar en un registry accesible desde todos los nodos.
     #
@@ -17,4 +17,4 @@ functions:
     # desplegado un contenedor `registry`
     #
     # Más información: https://docs.docker.com/registry/
-    image: "10.10.32.232:5000/echo-py:latest"
+    image: "192.168.43.232:5000/echo:latest"

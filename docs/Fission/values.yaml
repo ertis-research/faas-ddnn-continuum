@@ -1,2 +1,5 @@
 mqt_keda:
   enabled: true
+
+persistence:
+  enabled: false

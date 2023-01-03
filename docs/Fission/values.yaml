@@ -3,3 +3,6 @@ mqt_keda:
 
 persistence:
   enabled: false
+# Enable logs
+influxdb:
+  enabled: true

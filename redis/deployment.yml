@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       run: redis-serverless
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:

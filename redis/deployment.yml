@@ -2,33 +2,34 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-serverless
-  labels:
-    app: redis-serverless
 spec:
   selector:
     matchLabels:
-      app: redis-serverless
-  replicas: 1
+      run: redis-serverless
+  replicas: 2
   template:
     metadata:
       labels:
-        app: redis-serverless
+        run: redis-serverless
     spec:
-      # nodeName: node4
       containers:
-        - name: redis
+        - name: redis-serverless
           image: redis:7.0
+          ports:
+            - containerPort: 6379
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: redis-serverless-service
+  name: redis-serverless
+  labels:
+    run: redis-serverless
 spec:
-  selector:
-    app.kubernetes.io/name: redis-serverless
   ports:
-    # redis-serverless-service.default.svc.cluster.local:6379
-    - name: redis
+    - port: 6379
       protocol: TCP
-      port: 6379
-      # targetPort: http-web-svc
+  selector:
+    run: redis-serverless
+# redis:7.0
+# redis-serverless.default.svc.cluster.local:6379

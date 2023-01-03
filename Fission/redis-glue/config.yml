@@ -1,0 +1,10 @@
+# kubectl create -f config_map.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: default
+  name: redis-glue
+data:
+  HOSTNAME: "redis-serverless.default.svc.cluster.local"
+  PORT: "6379" 
+

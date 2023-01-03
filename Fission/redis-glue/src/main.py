@@ -23,7 +23,6 @@ def main():
     value = payload["value"]
 
     with get_redis('default', 'redis-glue') as r:
-        print(value)
-        r.set('value', value)
+        response = r.set('value', value)
     
-    return payload
+    return {"response": response}

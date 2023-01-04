@@ -1,4 +1,9 @@
 *.local.*
 *.local
 .vscode
+
+# Python packages
 .venv
+# Node packages
+node_modules
+pnpm-lock.yaml

@@ -3,6 +3,8 @@
 A simple function that updates the `value` key on a Redis database with the
 received payload value
 
+> Original instructions: https://fission.io/docs/usage/spec/
+
 ## Deployment instructions
 
 ```sh

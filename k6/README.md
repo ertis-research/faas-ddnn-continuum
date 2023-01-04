@@ -15,7 +15,7 @@ cp -r . /lambda/k6
 
 ## fission-default-1h-redis-glue
 
-For [`fission/redis-glue`](../../Fission/redis-glue)
+For [`fission/redis-glue`](../Fission/redis-glue)
 
 - Dataset contains 96 elements
 - Sends request every hour

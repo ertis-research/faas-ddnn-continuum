@@ -8,18 +8,24 @@ spec:
   containers:
     - name: k6
       image: grafana/k6:0.41.0
-      command: ["k6", "run", "--out", "csv", "/d/script.js"]
+      command: ["k6", "run", "-q", "--out", "csv", "/d/script.js"]
       env:
         - name: "SCRIPT_URL"
           value: "http://router.fission.svc.cluster.local:80/redis-glue"
         - name: SCRIPT_DATASET
           value: "/d/payloads.json"
-        - name: "K6_VUS"
+        - name: SCRIPT_RATE
           value: "1"
-        - name: SCRIPT_SLEEP_FOR
-          value: "3600" # 60m * 60s/m = 3600s
+        - name: SCRIPT_DURATION
+          value: "96h"
+        - name: SCRIPT_TIMEUNIT
+          value: "1h"
         - name: "K6_CSV_FILENAME"
           value: /d/out/results-fission-default-1h-redis-glue.csv
+        - name: K6_NO_VU_CONNECTION_REUSE
+          value: "true"
+        - name: K6_CSV_SAVE_INTERVAL
+          value: "15m"
       volumeMounts:
         - mountPath: /d/out
           name: k6-csv
@@ -34,9 +40,9 @@ spec:
         type: DirectoryOrCreate
     - name: k6-script
       hostPath:
-        path: /lambda/k6/script-sleep.js
+        path: /lambda/k6/k6-constant-arrival-rate.js
         type: File
     - name: k6-payloads
       hostPath:
-        path: /lambda/k6/payloads/precio-energias-de-balance-small.json
+        path: /lambda/k6/payloads/precio-energias-de-balance.json
         type: File

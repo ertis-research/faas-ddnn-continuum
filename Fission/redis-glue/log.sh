@@ -14,5 +14,5 @@ fission fn create --spec \
 # Create the route
 fission route create --spec \
  --method POST \
- --url /redis-glue-debug \
+ --url /redis-glue \
  --function redis-glue

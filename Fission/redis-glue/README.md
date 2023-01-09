@@ -3,6 +3,9 @@
 A simple function that updates the `value` key on a Redis database with the
 received payload value
 
+- Executor kind: `poolmgr`
+- Pool size: 0
+
 > Original instructions: https://fission.io/docs/usage/spec/
 
 ## Deployment instructions

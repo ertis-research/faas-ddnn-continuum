@@ -25,7 +25,7 @@ spec:
         - name: K6_NO_VU_CONNECTION_REUSE
           value: "true"
         - name: K6_CSV_SAVE_INTERVAL
-          value: "15m"
+          value: "5m"
       volumeMounts:
         - mountPath: /d/out
           name: k6-csv

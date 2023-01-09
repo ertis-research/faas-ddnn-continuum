@@ -35,3 +35,27 @@ kubectl apply -f /lambda/k6/fission-default-1h-redis-glue.yml
 ```sh
 kubectl delete pod k6-load-deployment-fission-default-1h-redis-glue
 ```
+
+## fission-default-1h-redis-glue-newdeploy
+
+For [`Fission/redis-glue-newdeploy`](../Fission/redis-glue-newdeploy)
+
+- Dataset contains 96 elements
+- Sends request every hour
+- Takes 4 days to complete
+
+```sh
+kubectl apply -f /lambda/k6/fission-default-1h-redis-glue-newdeploy.yml
+```
+
+### Get results
+
+- CSV: `/lambda/k6/out/results-fission-default-1h-redis-glue-newdeploy.csv`
+- Logs:
+  `kubectl logs k6-load-deployment-fission-default-1h-redis-glue-newdeploy`
+
+### Cleanup
+
+```sh
+kubectl delete pod k6-load-deployment-fission-default-1h-redis-glue-newdeploy
+```

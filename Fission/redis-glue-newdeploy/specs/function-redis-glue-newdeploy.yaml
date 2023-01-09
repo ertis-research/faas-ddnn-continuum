@@ -1,0 +1,58 @@
+include:
+- src/*
+kind: ArchiveUploadSpec
+name: src-b2YA
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: redis-glue-newdeploy-e4add788-a1e7-41e8-8f5e-67f1f69d346f
+  namespace: default
+spec:
+  deployment:
+    checksum: {}
+  environment:
+    name: python-newdeploy
+    namespace: default
+  source:
+    checksum: {}
+    type: url
+    url: archive://src-b2YA
+status:
+  buildstatus: pending
+  lastUpdateTimestamp: "2023-01-09T11:13:51Z"
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: redis-glue-newdeploy
+  namespace: default
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: newdeploy
+      MaxScale: 3
+      MinScale: 0
+      SpecializationTimeout: 120
+      TargetCPUPercent: 0
+    StrategyType: execution
+  concurrency: 500
+  configmaps:
+  - name: redis-glue
+    namespace: default
+  environment:
+    name: python-newdeploy
+    namespace: default
+  functionTimeout: 60
+  idletimeout: 120
+  package:
+    functionName: main.main
+    packageref:
+      name: redis-glue-newdeploy-e4add788-a1e7-41e8-8f5e-67f1f69d346f
+      namespace: default
+  requestsPerPod: 1
+  resources: {}

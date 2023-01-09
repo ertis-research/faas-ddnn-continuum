@@ -1,0 +1,22 @@
+apiVersion: fission.io/v1
+kind: Environment
+metadata:
+  creationTimestamp: null
+  name: python-newdeploy
+  namespace: default
+spec:
+  builder:
+    command: build
+    container:
+      name: ""
+      resources: {}
+    image: fission/python-builder
+  imagepullsecret: ""
+  keeparchive: false
+  resources: {}
+  runtime:
+    container:
+      name: ""
+      resources: {}
+    image: fission/python-env
+  version: 3

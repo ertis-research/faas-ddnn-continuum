@@ -1,4 +1,5 @@
 # Commands used to generate `specs/`
+fission spec init
 # Create the environment
 fission env create --spec \
  --name python \

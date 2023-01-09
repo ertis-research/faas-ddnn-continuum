@@ -1,0 +1,116 @@
+time="2023-01-04T19:08:01Z" level=info msg=OK source=console
+time="2023-01-04T20:08:01Z" level=info msg=OK source=console
+time="2023-01-04T21:08:01Z" level=info msg=OK source=console
+time="2023-01-04T22:08:01Z" level=info msg=OK source=console
+time="2023-01-04T23:08:01Z" level=info msg=OK source=console
+time="2023-01-05T00:08:01Z" level=info msg=OK source=console
+time="2023-01-05T01:08:01Z" level=info msg=OK source=console
+time="2023-01-05T02:08:01Z" level=info msg=OK source=console
+time="2023-01-05T03:08:01Z" level=info msg=OK source=console
+time="2023-01-05T04:08:01Z" level=info msg=OK source=console
+time="2023-01-05T05:08:01Z" level=info msg=OK source=console
+time="2023-01-05T06:08:01Z" level=info msg=OK source=console
+time="2023-01-05T07:08:01Z" level=info msg=OK source=console
+time="2023-01-05T08:08:01Z" level=info msg=OK source=console
+time="2023-01-05T09:08:01Z" level=info msg=OK source=console
+time="2023-01-05T10:08:01Z" level=info msg=OK source=console
+time="2023-01-05T11:08:01Z" level=info msg=OK source=console
+time="2023-01-05T12:08:01Z" level=info msg=OK source=console
+time="2023-01-05T13:08:01Z" level=info msg=OK source=console
+time="2023-01-05T14:08:01Z" level=info msg=OK source=console
+time="2023-01-05T15:08:01Z" level=info msg=OK source=console
+time="2023-01-05T16:08:01Z" level=info msg=OK source=console
+time="2023-01-05T17:08:01Z" level=info msg=OK source=console
+time="2023-01-05T18:08:01Z" level=info msg=OK source=console
+time="2023-01-05T19:08:01Z" level=info msg=OK source=console
+time="2023-01-05T20:08:01Z" level=info msg=OK source=console
+time="2023-01-05T21:08:01Z" level=info msg=OK source=console
+time="2023-01-05T22:08:01Z" level=info msg=OK source=console
+time="2023-01-05T23:08:01Z" level=info msg=OK source=console
+time="2023-01-06T00:08:01Z" level=info msg=OK source=console
+time="2023-01-06T01:08:01Z" level=info msg=OK source=console
+time="2023-01-06T02:08:01Z" level=info msg=OK source=console
+time="2023-01-06T03:09:01Z" level=warning msg="Request Failed" error="Post \"http://router.fission.svc.cluster.local:80/redis-glue\": request timeout"
+time="2023-01-06T03:09:01Z" level=info msg=OK source=console
+time="2023-01-06T04:08:01Z" level=info msg=OK source=console
+time="2023-01-06T05:08:01Z" level=info msg=OK source=console
+time="2023-01-06T06:08:01Z" level=info msg=OK source=console
+time="2023-01-06T07:08:01Z" level=info msg=OK source=console
+time="2023-01-06T08:08:01Z" level=info msg=OK source=console
+time="2023-01-06T09:08:01Z" level=info msg=OK source=console
+time="2023-01-06T10:08:01Z" level=info msg=OK source=console
+time="2023-01-06T11:08:01Z" level=info msg=OK source=console
+time="2023-01-06T12:08:01Z" level=info msg=OK source=console
+time="2023-01-06T13:08:01Z" level=info msg=OK source=console
+time="2023-01-06T14:08:01Z" level=info msg=OK source=console
+time="2023-01-06T15:08:01Z" level=info msg=OK source=console
+time="2023-01-06T16:08:01Z" level=info msg=OK source=console
+time="2023-01-06T17:08:01Z" level=info msg=OK source=console
+time="2023-01-06T18:08:01Z" level=info msg=OK source=console
+time="2023-01-06T19:08:01Z" level=info msg=OK source=console
+time="2023-01-06T20:08:01Z" level=info msg=OK source=console
+time="2023-01-06T21:08:01Z" level=info msg=OK source=console
+time="2023-01-06T22:08:01Z" level=info msg=OK source=console
+time="2023-01-06T23:08:01Z" level=info msg=OK source=console
+time="2023-01-07T00:08:01Z" level=info msg=OK source=console
+time="2023-01-07T01:08:01Z" level=info msg=OK source=console
+time="2023-01-07T02:08:01Z" level=info msg=OK source=console
+time="2023-01-07T03:08:01Z" level=info msg=OK source=console
+time="2023-01-07T04:08:01Z" level=info msg=OK source=console
+time="2023-01-07T05:08:01Z" level=info msg=OK source=console
+time="2023-01-07T06:08:01Z" level=info msg=OK source=console
+time="2023-01-07T07:08:01Z" level=info msg=OK source=console
+time="2023-01-07T08:08:01Z" level=info msg=OK source=console
+time="2023-01-07T09:08:01Z" level=info msg=OK source=console
+time="2023-01-07T10:08:01Z" level=info msg=OK source=console
+time="2023-01-07T11:08:01Z" level=info msg=OK source=console
+time="2023-01-07T12:08:01Z" level=info msg=OK source=console
+time="2023-01-07T13:08:01Z" level=info msg=OK source=console
+time="2023-01-07T14:08:01Z" level=info msg=OK source=console
+time="2023-01-07T15:08:01Z" level=info msg=OK source=console
+time="2023-01-07T16:08:01Z" level=info msg=OK source=console
+time="2023-01-07T17:08:01Z" level=info msg=OK source=console
+time="2023-01-07T18:08:01Z" level=info msg=OK source=console
+time="2023-01-07T19:08:01Z" level=info msg=OK source=console
+time="2023-01-07T20:08:01Z" level=info msg=OK source=console
+time="2023-01-07T21:08:01Z" level=info msg=OK source=console
+time="2023-01-07T22:08:01Z" level=info msg=OK source=console
+time="2023-01-07T23:08:01Z" level=info msg=OK source=console
+time="2023-01-08T00:08:01Z" level=info msg=OK source=console
+time="2023-01-08T01:08:01Z" level=info msg=OK source=console
+time="2023-01-08T02:08:01Z" level=info msg=OK source=console
+time="2023-01-08T03:08:01Z" level=info msg=OK source=console
+time="2023-01-08T04:08:01Z" level=info msg=OK source=console
+time="2023-01-08T05:08:01Z" level=info msg=OK source=console
+time="2023-01-08T06:08:01Z" level=info msg=OK source=console
+time="2023-01-08T07:08:01Z" level=info msg=OK source=console
+time="2023-01-08T08:08:01Z" level=info msg=OK source=console
+time="2023-01-08T09:08:01Z" level=info msg=OK source=console
+time="2023-01-08T10:08:01Z" level=info msg=OK source=console
+time="2023-01-08T11:08:01Z" level=info msg=OK source=console
+time="2023-01-08T12:08:01Z" level=info msg=OK source=console
+time="2023-01-08T13:08:01Z" level=info msg=OK source=console
+time="2023-01-08T14:08:01Z" level=info msg=OK source=console
+time="2023-01-08T15:08:01Z" level=info msg=OK source=console
+time="2023-01-08T16:08:01Z" level=info msg=OK source=console
+time="2023-01-08T17:08:01Z" level=info msg=OK source=console
+time="2023-01-08T18:08:01Z" level=info msg=OK source=console
+time="2023-01-08T19:08:01Z" level=info msg=OK source=console
+
+     data_received..................: 12 kB 0.034999978462907165 B/s
+     data_sent......................: 29 kB 0.08366024944593542 B/s
+     http_req_blocked...............: avg=13.37ms  min=5.82ms   med=11.89ms  max=37.94ms  p(90)=18.64ms  p(95)=25.28ms 
+     http_req_connecting............: avg=1ms      min=450.85µs med=773.94µs max=8.74ms   p(90)=1.02ms   p(95)=2.11ms  
+     http_req_duration..............: avg=792.46ms min=132.7ms  med=175.93ms max=59.96s   p(90)=194.5ms  p(95)=202.96ms
+       { expected_response:true }...: avg=176.06ms min=132.7ms  med=175.89ms max=222.72ms p(90)=193.72ms p(95)=201.68ms
+     http_req_failed................: 1.03% ✓ 1                      ✗ 96 
+     http_req_receiving.............: avg=387.63µs min=0s       med=367.19µs max=1.13ms   p(90)=574.47µs p(95)=678.91µs
+     http_req_sending...............: avg=721.5µs  min=107.24µs med=515.59µs max=8.46ms   p(90)=886.02µs p(95)=1.25ms  
+     http_req_tls_handshaking.......: avg=0s       min=0s       med=0s       max=0s       p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=791.35ms min=132ms    med=174.95ms max=59.96s   p(90)=193.61ms p(95)=202.11ms
+     http_reqs......................: 97    0.000281/s
+     iteration_duration.............: avg=813.06ms min=153.18ms med=194.54ms max=1m0s     p(90)=222.98ms p(95)=229.1ms 
+     iterations.....................: 97    0.000281/s
+     vus............................: 1     min=1                    max=1
+     vus_max........................: 1     min=1                    max=1
+

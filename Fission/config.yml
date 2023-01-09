@@ -1,4 +1,5 @@
-# kubectl create -f config_map.yml
+# Config maps for Fission functions
+# $ kubectl create -f config_map.yml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,5 +7,4 @@ metadata:
   name: redis-glue
 data:
   HOSTNAME: "redis-serverless.default.svc.cluster.local"
-  PORT: "6379" 
-
+  PORT: "6379"

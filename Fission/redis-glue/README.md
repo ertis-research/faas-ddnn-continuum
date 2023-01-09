@@ -9,7 +9,7 @@ received payload value
 
 ```sh
 # Load the function required config map and secrets
-kubectl apply -f config.yml
+kubectl apply -f ../config.yml
 # Lauch the function on fission
 fission spec apply --wait
 ```

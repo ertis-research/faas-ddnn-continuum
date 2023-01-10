@@ -1,0 +1,11 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://192.168.43.7:31112
+functions:
+  redis-glue:
+    lang: python3-http
+    handler: ./redis-glue
+    image: ${DOCKER_REGISTRY:-registry.hub.docker.com}/redis-glue:latest # 10.10.32.232:5000/redis-glue:latest
+    environment_file:
+      - env.yml

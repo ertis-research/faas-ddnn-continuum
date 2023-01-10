@@ -1,0 +1,58 @@
+include:
+- src/*
+kind: ArchiveUploadSpec
+name: src-SMpb
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: redis-glue-newdeploy-min1-72f0d7a6-3b55-4cd7-a74d-7b6d679a5a5a
+  namespace: default
+spec:
+  deployment:
+    checksum: {}
+  environment:
+    name: python-newdeploy-min1
+    namespace: default
+  source:
+    checksum: {}
+    type: url
+    url: archive://src-SMpb
+status:
+  buildstatus: pending
+  lastUpdateTimestamp: "2023-01-10T08:59:00Z"
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: redis-glue-newdeploy-min1
+  namespace: default
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: newdeploy
+      MaxScale: 3
+      MinScale: 1
+      SpecializationTimeout: 120
+      TargetCPUPercent: 0
+    StrategyType: execution
+  concurrency: 500
+  configmaps:
+  - name: redis-glue
+    namespace: default
+  environment:
+    name: python-newdeploy-min1
+    namespace: default
+  functionTimeout: 60
+  idletimeout: 120
+  package:
+    functionName: main.main
+    packageref:
+      name: redis-glue-newdeploy-min1-72f0d7a6-3b55-4cd7-a74d-7b6d679a5a5a
+      namespace: default
+  requestsPerPod: 1
+  resources: {}

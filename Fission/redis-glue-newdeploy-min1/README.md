@@ -4,7 +4,7 @@ A simple function that updates the `value` key on a Redis database with the
 received payload value
 
 - Executor kind: `newdeploy`
-- Minscale: 0
+- Minscale: 1
 
 > Original instructions: https://fission.io/docs/usage/spec/
 

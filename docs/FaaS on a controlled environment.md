@@ -6,32 +6,6 @@ title: FaaS on a controlled environment
 ---
 
 <!--
-Informe de evaluación de plataformas de función como servicio en un entorno controlado
-
-Al contrario que los sistemas de computación tradicionales, como los sistemas
-cloud, la computación sin servidor, también conocida como función como servicio,
-presenta un cambio de paradigma en el que las aplicaciones y sus funciones son
-instanciadas y ejecutadas únicamente cuando éstas son invocadas. Esto no sólo
-permite liberar los recursos de las infraestructuras cuando no se requiera un
-uso de las aplicaciones, sino también un auto-escalado de las aplicaciones en
-momentos de necesidad, lo que conlleva a un uso eficiente de recursos. En el
-contexto del Internet de las Cosas (IoT) donde paradigmas con recursos limitados
-como la computación en el borde (edge computing) juegan un papel muy importante
-para el desarrollo de aplicaciones con requisitos de baja latencia, la
-computación sin servidor se presenta como una tecnología prometedora. El
-presente proyecto pretender estudiar la adopción y las limitaciones de la
-computación sin servidor en este contexto. En primer lugar, el estudiante
-realizará una aplicación IoT para validar la tecnología, y posteriormente, a
-partir de los conocimientos adquiridos, adaptará el framework Kafka-ML del grupo
-de investigación ERTIS para el uso de computación sin servidor. Kafka-ML es un
-proyecto de código abierto para la gestión completa del ciclo de vida de
-aplicaciones de aprendizaje automático a través de flujos continuos de datos.
-La perfecta integración de las mencionadas tecnologías permitirá el desarrollo
-de aplicaciones IoT y aprendizaje automático adaptadas a las necesidades de cada
-momento.
-
----
-
 recursos:
   - https://dl.acm.org/doi/10.1145/3565382.3565878
 notas:
@@ -64,13 +38,17 @@ vendor-specific and lack flexibility. This document provides a general overview
 of several open-source FaaS platforms and their potential applications in the
 context of IoT
 
-# OpenFaaS
+# OpenFaaS [^1]
 
 It's a Kubernetes-native serverless platform featured on the Cloud Native
 Landscape. It's licensed under the MIT license and it currently holds the title
 for most stars of any installable serverless platform in GitHub, with over 22k
-stars. OpenFaaS also offers a paid version, OpenFaaS Pro, which builds upon the
-open source project to deliver some additional features and commercial support
+stars[^2]. OpenFaaS also offers a paid version, OpenFaaS Pro, which builds upon
+the open source project to deliver some additional features and commercial
+support
+
+[^1]: https://www.openfaas.com/
+[^2]: https://github.com/openfaas/faas
 
 ## Installation
 
@@ -79,25 +57,65 @@ single host. For our purposes, we decided to deploy the full OpenFaaS platform
 on a Kubernetes cluster. The platform can be installed using Helm or Arkade
 charts, allowing for customization on the installation.
 
-The installation guide also provides instructions on how to install `faas-cli`,
-a Command Line Interface (CLI) for managing functions on Linux, Windows and
-macOS
+The installation guide[^3] also provides instructions on how to install
+`faas-cli`, a Command Line Interface (CLI) available on Linux, Windows and
+macOS. It's a single executable that provides developers with a friendly
+interface to develop serverless functions, as well as operators to manage the
+OpenFaaS Gateway
 
-<!--TODO More information about the CLI-->
+[^3]: https://docs.openfaas.com/deployment/
 
 ## Developing OpenFaaS functions
 
-`faas-cli` provides tools for both developing and managing functions, as well as
-the OpenFaaS Gateway itself.
+OpenFaaS documentation includes multiple tutorials and learning resources that
+ease the learning curve. For example, the "First Python Function"[^4] tutorial
+is straightforward and covers step by step everything required to deploy a
+Python function with dependencies from scratch. The development workflow usually
+involves these steps:
 
-OpenFaaS has the concept of _templates_,
+1. **Pull a template from the store**. `faas-cli` has this concept called
+   _templates_, which makes posible to scaffold a whole OpenFaaS function with
+   one command.
+2. **Modify the OpenFaaS stack file**: Each function comes with a YAML
+   description file used by `faas-cli` to deploy de function. The developer can
+   enable certain configuration options by modifying this file. Commonly used
+   options include environment variables, secrets and build options
+3. **Modify the source code**
+4. **Deploy the function to OpenFaaS Gateway**: Use the `faas-cli up` command to
+   deploy the function
 
-<!-- TODO: Explore more the idea of templates -->
+What makes OpenFaaS so effortless to get started is the abstraction of the
+underlying technologies. In fact, cognizance about OpenFaaS itself isn't
+mandatory. A developer can create a function and update both the source code and
+the stack file at any point in the future, meaning the only required steps for
+deploying a function are pulling the template and deploying the function. Of
+course, you will eventually need to acquire this knowledge in order to create
+any meaningful function (for example, providing environment variables or
+secrets), but is not a cost you pay upfront
+
+[^4]: https://docs.openfaas.com/tutorials/first-python-function/
+
+## Templates and the store
+
+The `faas-cli` includes a template engine built-in that can generate a new
+OpenFaaS project in a given programming language[^5]. There are multiple
+programming languages officially supported, including popular ones such as
+Python, JavaScript, Ruby or Java. These usually come with multiple flavors that
+include extra dependencies or switch the base docker image. There is also a
+vibrant ecosystem of community maintained templates, which enables developers to
+create functions on other languages not officially supported by the OpenFaaS
+team. These templates are shared using the OpenFaaS store, which serves as
+template manager
+
+[^5]: https://docs.openfaas.com/cli/templates/#templates
+
+## Function lifecycle
+
+<!-- https://docs.openfaas.com/architecture/invocations/ -->
 
 <!--
-OpenFaaS also provides a CLI, a single available for Linux, Windows and macOS.
-It provides tools for both developing and managing functions, as well as the
-stack itself.
+- How the functions are created
+- Cuanto tiempo duran las funciones en ejecución
 -->
 
 # Fission

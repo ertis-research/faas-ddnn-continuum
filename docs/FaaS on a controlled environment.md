@@ -18,6 +18,18 @@ notas:
     - Features diferenciadoras
   - Deberían ser minimo 6 páginas del template
 
+- Introduction
+- OpenFaaS
+  - Installation
+  - Developing functions
+  - Templates and the store
+  - Function lifecycle
+- Fission
+  - Installation
+  - Developing functions
+  - Function executors, triggers and specs
+  - Function lifecycle
+- OpenWhisk
 -->
 
 # Introduction
@@ -65,13 +77,13 @@ OpenFaaS Gateway
 
 [^3]: https://docs.openfaas.com/deployment/
 
-## Developing OpenFaaS functions
+## Developing functions
 
 OpenFaaS documentation includes multiple tutorials and learning resources that
 ease the learning curve. For example, the "First Python Function"[^4] tutorial
 is straightforward and covers step by step everything required to deploy a
-Python function with dependencies from scratch. The development workflow usually
-involves these steps:
+Python function with PyPI dependencies from scratch. The development workflow
+usually involves these steps:
 
 1. **Pull a template from the store**. `faas-cli` has this concept called
    _templates_, which makes posible to scaffold a whole OpenFaaS function with
@@ -80,9 +92,10 @@ involves these steps:
    description file used by `faas-cli` to deploy de function. The developer can
    enable certain configuration options by modifying this file. Commonly used
    options include environment variables, secrets and build options
-3. **Modify the source code**
+3. **Modifying the source code**
 4. **Deploy the function to OpenFaaS Gateway**: Use the `faas-cli up` command to
-   deploy the function
+   deploy the function. This step builds a Docker image that is later pushed to
+   a Docker Registry, and used by OpenFaaS to instantiate functions
 
 What makes OpenFaaS so effortless to get started is the abstraction of the
 underlying technologies. In fact, cognizance about OpenFaaS itself isn't
@@ -90,8 +103,8 @@ mandatory. A developer can create a function and update both the source code and
 the stack file at any point in the future, meaning the only required steps for
 deploying a function are pulling the template and deploying the function. Of
 course, you will eventually need to acquire this knowledge in order to create
-any meaningful function (for example, providing environment variables or
-secrets), but is not a cost you pay upfront
+any meaningful function (for example, providing environment variables or secrets
+to your functions), but is not a cost you pay upfront
 
 [^4]: https://docs.openfaas.com/tutorials/first-python-function/
 
@@ -100,20 +113,21 @@ secrets), but is not a cost you pay upfront
 The `faas-cli` includes a template engine built-in that can generate a new
 OpenFaaS project in a given programming language[^5]. There are multiple
 programming languages officially supported, including popular ones such as
-Python, JavaScript, Ruby or Java. These usually come with multiple flavors that
-include extra dependencies or switch the base docker image. There is also a
-vibrant ecosystem of community maintained templates, which enables developers to
-create functions on other languages not officially supported by the OpenFaaS
-team. These templates are shared using the OpenFaaS store, which serves as
-template manager
+Python, JavaScript, Ruby or Java. These templates usually come with multiple
+flavors that include extra dependencies or switch the base docker image. There
+is also a vibrant ecosystem of community maintained templates, which enables
+developers to create functions on other languages not officially supported by
+the OpenFaaS team. These templates are shared using the OpenFaaS store, which
+serves as template manager
 
 [^5]: https://docs.openfaas.com/cli/templates/#templates
 
+<!--
+
 ## Function lifecycle
 
-<!-- https://docs.openfaas.com/architecture/invocations/ -->
+TODO https://docs.openfaas.com/architecture/invocations/
 
-<!--
 - How the functions are created
 - Cuanto tiempo duran las funciones en ejecución
 -->
@@ -137,10 +151,70 @@ operator to enable each feature individually. For example, the Kafka event
 trigger requires KEDA installed on the cluster, as well as enabling the KEDA
 integration on Fission.
 
-The installation guide also provides instructions on how to install `fission`,
-the CLI for managing functions on Linux, Windows and macOS
+The installation guide also provides instructions on how to install `fission`, a
+CLI available on Linux, Windows and macOS. It's a single executable that allows
+users to operate Fission on the cluster.
 
-<!--TODO More information about the CLI-->
+## Developing functions
+
+Fission's documentation is complete and describes all the main features of the
+platform. The developer team has curated a great set of examples for all of the
+languages they support, which makes developing a new function easy. The
+developer experience usually involves the following steps:
+
+1. **Choosing the right environment**: Each function requires an environment to
+   run. You can create as many environments as you need with different options,
+   but a function can only run on one environment
+2. **Scaffolding the project**: Fission's CLI does not provide a way to scaffold
+   a new project automatically. Each environment comes with it's own builder,
+   which is used to compile and install dependencies. The developer is
+   responsible of reading the instructions and creating a project structure that
+   matches the builder's requirements
+3. **Modifying the source code**
+4. **Deploying the environment and function**: The `fission` CLI is used to
+   package the source code and send it to the selected environment builder.
+   Fission doesn't create triggers for functions by default, which means that
+   the function will be only available using the `fission fn test` command.
+
+To automate function deployment, Fission offers _specs_ which are Kubernetes
+Custom Resources Definition files (CRD) that the CLI understands. One advantage
+of this approach over running `fission` commands directly is that environments
+can be extended using Kubernetes Pod specs. This provides functions with access
+to volumes, environment variables and sidecar/init containers.
+
+Although Fission's unique approach to serverless has a stepper learning curve,
+
+Fission's unique approach to serverless computing based on environments creates
+a rich variety of combinations it. The developer requires a basic understanding
+of how fission environments work, which might be challenging
+
+<!--
+One great thing about Fission's functions
+
+Choosing an environment makes
+
+One negative aspect
+
+Fission's main feature, _environments_
+
+In contrast with OpenFaaS, Fission's documentation isn't as extensive
+
+Fission doesn't have a documentation as extensive as
+
+Fission's devel
+
+Fission has the most powerful approach to serverless computing has a stepper
+learning curve. The concept of _environments_ creates some friction between the
+developer and the
+
+- El CLI permite crear specs
+- Se pueden desplegar ficheros individuales
+- No requiere de docker
+
+Fission
+
+As previously stated, Fission in
+-->
 
 # OpenWhisk
 

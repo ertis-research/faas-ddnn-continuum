@@ -1,0 +1,113 @@
+time="2023-01-12T11:04:45Z" level=info msg=OK source=console
+time="2023-01-12T12:04:46Z" level=info msg=OK source=console
+time="2023-01-12T13:04:46Z" level=info msg=OK source=console
+time="2023-01-12T14:04:46Z" level=info msg=OK source=console
+time="2023-01-12T15:04:46Z" level=info msg=OK source=console
+time="2023-01-12T16:04:46Z" level=info msg=OK source=console
+time="2023-01-12T17:04:46Z" level=info msg=OK source=console
+time="2023-01-12T18:04:46Z" level=info msg=OK source=console
+time="2023-01-12T19:04:46Z" level=info msg=OK source=console
+time="2023-01-12T20:04:45Z" level=info msg=OK source=console
+time="2023-01-12T21:04:46Z" level=info msg=OK source=console
+time="2023-01-12T22:04:45Z" level=info msg=OK source=console
+time="2023-01-12T23:04:45Z" level=info msg=OK source=console
+time="2023-01-13T00:04:45Z" level=info msg=OK source=console
+time="2023-01-13T01:04:44Z" level=info msg=OK source=console
+time="2023-01-13T02:04:46Z" level=info msg=OK source=console
+time="2023-01-13T03:04:45Z" level=info msg=OK source=console
+time="2023-01-13T04:04:45Z" level=info msg=OK source=console
+time="2023-01-13T05:04:45Z" level=info msg=OK source=console
+time="2023-01-13T06:04:44Z" level=info msg=OK source=console
+time="2023-01-13T07:04:46Z" level=info msg=OK source=console
+time="2023-01-13T08:04:46Z" level=info msg=OK source=console
+time="2023-01-13T09:04:46Z" level=info msg=OK source=console
+time="2023-01-13T10:04:45Z" level=info msg=OK source=console
+time="2023-01-13T11:04:46Z" level=info msg=OK source=console
+time="2023-01-13T12:04:46Z" level=info msg=OK source=console
+time="2023-01-13T13:04:46Z" level=info msg=OK source=console
+time="2023-01-13T14:04:45Z" level=info msg=OK source=console
+time="2023-01-13T15:04:46Z" level=info msg=OK source=console
+time="2023-01-13T16:04:46Z" level=info msg=OK source=console
+time="2023-01-13T17:04:46Z" level=info msg=OK source=console
+time="2023-01-13T18:04:45Z" level=info msg=OK source=console
+time="2023-01-13T19:04:46Z" level=info msg=OK source=console
+time="2023-01-13T20:04:46Z" level=info msg=OK source=console
+time="2023-01-13T21:04:46Z" level=info msg=OK source=console
+time="2023-01-13T22:04:46Z" level=info msg=OK source=console
+time="2023-01-13T23:04:45Z" level=info msg=OK source=console
+time="2023-01-14T00:04:46Z" level=info msg=OK source=console
+time="2023-01-14T01:04:46Z" level=info msg=OK source=console
+time="2023-01-14T02:04:46Z" level=info msg=OK source=console
+time="2023-01-14T03:04:46Z" level=info msg=OK source=console
+time="2023-01-14T04:04:46Z" level=info msg=OK source=console
+time="2023-01-14T05:04:46Z" level=info msg=OK source=console
+time="2023-01-14T06:04:46Z" level=info msg=OK source=console
+time="2023-01-14T07:04:44Z" level=info msg=OK source=console
+time="2023-01-14T08:04:45Z" level=info msg=OK source=console
+time="2023-01-14T09:04:46Z" level=info msg=OK source=console
+time="2023-01-14T10:04:45Z" level=info msg=OK source=console
+time="2023-01-14T11:04:46Z" level=info msg=OK source=console
+time="2023-01-14T12:04:46Z" level=info msg=OK source=console
+time="2023-01-14T13:04:46Z" level=info msg=OK source=console
+time="2023-01-14T14:04:46Z" level=info msg=OK source=console
+time="2023-01-14T15:04:46Z" level=info msg=OK source=console
+time="2023-01-14T16:04:46Z" level=info msg=OK source=console
+time="2023-01-14T17:04:45Z" level=info msg=OK source=console
+time="2023-01-14T18:04:46Z" level=info msg=OK source=console
+time="2023-01-14T19:04:46Z" level=info msg=OK source=console
+time="2023-01-14T20:04:46Z" level=info msg=OK source=console
+time="2023-01-14T21:04:46Z" level=info msg=OK source=console
+time="2023-01-14T22:04:45Z" level=info msg=OK source=console
+time="2023-01-14T23:04:45Z" level=info msg=OK source=console
+time="2023-01-15T00:04:46Z" level=info msg=OK source=console
+time="2023-01-15T01:04:46Z" level=info msg=OK source=console
+time="2023-01-15T02:04:46Z" level=info msg=OK source=console
+time="2023-01-15T03:04:46Z" level=info msg=OK source=console
+time="2023-01-15T04:04:44Z" level=info msg=OK source=console
+time="2023-01-15T05:04:45Z" level=info msg=OK source=console
+time="2023-01-15T06:04:45Z" level=info msg=OK source=console
+time="2023-01-15T07:04:46Z" level=info msg=OK source=console
+time="2023-01-15T08:04:46Z" level=info msg=OK source=console
+time="2023-01-15T09:04:46Z" level=info msg=OK source=console
+time="2023-01-15T10:04:46Z" level=info msg=OK source=console
+time="2023-01-15T11:04:46Z" level=info msg=OK source=console
+time="2023-01-15T12:04:46Z" level=info msg=OK source=console
+time="2023-01-15T13:04:45Z" level=info msg=OK source=console
+time="2023-01-15T14:04:46Z" level=info msg=OK source=console
+time="2023-01-15T15:04:45Z" level=info msg=OK source=console
+time="2023-01-15T16:04:46Z" level=info msg=OK source=console
+time="2023-01-15T17:04:46Z" level=info msg=OK source=console
+time="2023-01-15T18:04:46Z" level=info msg=OK source=console
+time="2023-01-15T19:04:46Z" level=info msg=OK source=console
+time="2023-01-15T20:04:46Z" level=info msg=OK source=console
+time="2023-01-15T21:04:46Z" level=info msg=OK source=console
+time="2023-01-15T22:04:45Z" level=info msg=OK source=console
+time="2023-01-15T23:04:46Z" level=info msg=OK source=console
+time="2023-01-16T00:04:46Z" level=info msg=OK source=console
+time="2023-01-16T01:04:45Z" level=info msg=OK source=console
+time="2023-01-16T02:04:46Z" level=info msg=OK source=console
+time="2023-01-16T03:04:46Z" level=info msg=OK source=console
+time="2023-01-16T04:04:46Z" level=info msg=OK source=console
+time="2023-01-16T05:04:46Z" level=info msg=OK source=console
+time="2023-01-16T06:04:46Z" level=info msg=OK source=console
+time="2023-01-16T07:04:46Z" level=info msg=OK source=console
+time="2023-01-16T08:04:46Z" level=info msg=OK source=console
+
+     data_received..................: 12 kB 0.035373217294659 B/s
+     data_sent......................: 29 kB 0.08648877065484886 B/s
+     http_req_blocked...............: avg=8.32ms   min=2.45ms   med=7.06ms   max=34.59ms p(90)=12.76ms  p(95)=17.36ms 
+     http_req_connecting............: avg=1.24ms   min=427.13µs med=763.68µs max=10.4ms  p(90)=1.81ms   p(95)=4.6ms   
+     http_req_duration..............: avg=3.78s    min=2.35s    med=4.09s    max=4.13s   p(90)=4.11s    p(95)=4.12s   
+       { expected_response:true }...: avg=3.78s    min=2.35s    med=4.09s    max=4.13s   p(90)=4.11s    p(95)=4.12s   
+     http_req_failed................: 0.00% ✓ 0                     ✗ 94 
+     http_req_receiving.............: avg=599.81µs min=84.62µs  med=226.81µs max=27.83ms p(90)=488.86µs p(95)=553.68µs
+     http_req_sending...............: avg=365.99µs min=103.01µs med=248.91µs max=8.77ms  p(90)=412.01µs p(95)=507.38µs
+     http_req_tls_handshaking.......: avg=0s       min=0s       med=0s       max=0s      p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=3.78s    min=2.35s    med=4.09s    max=4.13s   p(90)=4.11s    p(95)=4.12s   
+     http_reqs......................: 94    0.000281/s
+     iteration_duration.............: avg=3.8s     min=2.36s    med=4.11s    max=4.17s   p(90)=4.13s    p(95)=4.13s   
+     iterations.....................: 94    0.000281/s
+     vus............................: 1     min=1                   max=1
+     vus_max........................: 1     min=1                   max=1
+
+time="2023-01-16T08:05:13Z" level=error msg="Aborting k6 in response to signal" sig=terminated

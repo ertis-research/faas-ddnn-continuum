@@ -126,16 +126,6 @@ serves as template manager
 
 [^5]: https://docs.openfaas.com/cli/templates/#templates
 
-<!--
-
-## Function lifecycle
-
-TODO https://docs.openfaas.com/architecture/invocations/
-
-- How the functions are created
-- Cuanto tiempo duran las funciones en ejecución
--->
-
 # Fission
 
 Another Kubernetes-native serverless platform, also featured on the Cloud Native
@@ -228,9 +218,79 @@ Environments can be configured with two strategies: **PoolManager** and
 A serverless platform from the Apache foundation, licensed under the Apache 2.0
 license. It has the least amount of stars on GitHub of all three platforms, with
 5.9k, but it offers some interesting features not available on neither Fission
-or OpenFaaS
+or OpenFaaS. The project is the serverless platform of choice for IBM, who uses
+OpenWhisk as machinery behind IBM Cloud Functions[^9]
+
+[^9]: https://www.ibm.com/es-es/cloud/functions
 
 ## Installation
 
-It can be installed through Docker, Kubernetes, Vagrant or directly on a host
-machine
+OpenWhisk offers many different deployment options: The platform can be
+installed on Kubernetes, Docker (with Docker Compose), Ansible and Vagrant. We
+choose to install OpenWhisk on Kubernetes using the official Helm chart. This is
+one key feature of OpenWhisk, as the platform keeps the same functionality
+despite the installation method.
+
+The installation wasn't easy. Because OpenWhisk aims to support multiple
+deployment options, it becomes difficult to track down deployment errors. It's a
+never ending cycle of reading through logs from the different pods and guessing
+what could be wrong. One of the multiple issues we had was related to a
+misconfiguration on OpenWhisk, which made pods unable to discover each other.
+Thankfully, some of this errors were documented on a troubleshooting file inside
+the docs repository.[^10]
+
+The installation guide wasn't great either. Although it provided instructions
+for different Kubernetes flavors such as Kind, OpenShift and upstream, these
+documents weren't complete as the some values for the Helm chart were missing.
+
+The installation guide also provides instructions on how to install `wsk`, which
+is a CLI tool available on Linux, Windows and macOS used to manage functions.
+`wsk` is available to download from the GitHub releases page as a single binary.
+OpenWhisk also offers a companion CLI, `wskdeploy`, which allows deployments
+using YAML description files
+
+[^10]:
+    https://github.com/apache/openwhisk-deploy-kube/blob/master/docs/troubleshooting.md
+
+## Developing functions
+
+OpenWhisk documentation includes minimal examples on how to deploy basic
+functions on all of their supported languages, including popular options such as
+JavaScript, Go, Python and Java. These functions are composed of one single
+source file and are directly submitted to the control plane for execution. For
+more complex functions, such as those using external dependencies, they provide
+links to community made blog posts. The developer workflow usually involves the
+following steps:
+
+1. **Scaffolding the project**: OpenWhisk does not enforce any particular way of
+   Creating the source files required for the function
+2. **Modifying the source code**
+3. **Deploying the function**: The developer is required to manually zip the
+   source files and upload the archive to using the `wsk` CLI.
+
+<!--
+
+We tried multiple times to develop our simple example `redis-glue` for
+OpenWhisk, but we weren't able to do so
+
+
+- Python 3.6 is not compatible with Redis 4.4.0
+- Function invocation kept yielding the same error
+
+```
+{
+    "error": "The action failed to generate or locate a binary. See logs for details."
+}
+```
+- We where unable to locate the logs. The pod were instantly destroyed and the docs didn't provide information on where to find said logs
+- Searching throught the control pane logs didn't yield results. Error messages weren't usefull at all
+
+```
+[2023-01-18T10:27:30.948Z] [INFO] [#tid_sid_dbBatcher] [CouchDbRestStore] 'test_activations' saving 1 documents [marker:database_saveDocumentBulk_start:81531062]
+[2023-01-18T10:27:30.948Z] [ERROR] [#tid_sid_unknown] [ContainerProxy] Failed during init of cold container Some(ContainerId(wskowdev-invoker-00-8-guest-redisglue)), queued activations will be aborted.
+[2023-01-18T10:27:30.949Z] [INFO] [#tid_r74NrE3H5G0rHLht3CX6TNVUyI8Dp4Cc] [MessagingActiveAck] posted completion of activation 762dfbfc722c425badfbfc722c325b02
+[2023-01-18T10:27:30.949Z] [INFO] [#tid_sid_invokerNanny] [KubernetesClient] Deleting pod wskowdev-invoker-00-8-guest-redisglue [marker:invoker_kubeapi.delete_start:81531063]
+[2023-01-18T10:27:30.968Z] [INFO] [#tid_sid_dbBatcher] [CouchDbRestStore]  [marker:database_saveDocumentBulk_finish:81531081:19]
+```
+
+-->

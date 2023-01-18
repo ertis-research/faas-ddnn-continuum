@@ -30,6 +30,10 @@ notas:
   - Function executors, triggers and specs
   - Function lifecycle
 - OpenWhisk
+  - Installation
+  - Developing functions
+- Comparison between these platforms
+- Conclusions and future work
 -->
 
 # Introduction
@@ -108,7 +112,7 @@ to your functions), but is not a cost you pay upfront
 
 [^4]: https://docs.openfaas.com/tutorials/first-python-function/
 
-## Templates and the store
+## Unique features: Templates and the store
 
 The `faas-cli` includes a template engine built-in that can generate a new
 OpenFaaS project in a given programming language[^5]. There are multiple
@@ -182,39 +186,42 @@ of this approach over running `fission` commands directly is that environments
 can be extended using Kubernetes Pod specs. This provides functions with access
 to volumes, environment variables and sidecar/init containers.
 
-Although Fission's unique approach to serverless has a stepper learning curve,
+Fission's unique approach to serverless has a stepper learning curve: Developers
+must learn the basics of environments before creating functions, as well as
+reading the instructions of the selected environment on how to scaffold the
+project. On the flip side, Fission's specs provide developers with a familiar
+interface which can be a big advantage for developers used to Kubernetes CRDs
 
-Fission's unique approach to serverless computing based on environments creates
-a rich variety of combinations it. The developer requires a basic understanding
-of how fission environments work, which might be challenging
+## Unique features: Environments
 
-<!--
-One great thing about Fission's functions
+As previously stated, Fission's environments are a key feature of the platform.
+They are the language-specific parts of Fission. They are made up of a container
+with an HTTP server, and usually a dynamic loader (_fetcher_) that can load a
+function. Some environments also contain builder containers, which take care of
+compilation and gathering dependencies. [^6]
 
-Choosing an environment makes
+Environments can be configured with two strategies: **PoolManager** and
+**NewDeploy**:
 
-One negative aspect
+- **PoolManager**: Fission keeps a running set of "warm" pods from the selected
+  environment. When a request arrives, the fetcher downloads the function and
+  injects it into the environment. This pods will be used for subsequent
+  requests, and will be cleaned after a certain idle period. This strategy is
+  great for functions that are short living and require short cold start
+  times[^7]
+- **NewDeploy**: Creates a Kubernetes Deployment with a service and a
+  HorizontalPodAutoscaler (HPA) for function executions. This enables
+  autoscaling of function pods and load balancing the requests between pods.
+  When a function experiences a traffic spike, the service helps to distribute
+  the requests to pods belonging to the function. The HPA scales the replicas of
+  the deployment based on the conditions set by the user. If there are no
+  requests for a certain idle time, the idle pods are cleaned up. This strategy
+  though increases the cold time of a function it allows functions to serve
+  massive traffic[^8]
 
-Fission's main feature, _environments_
-
-In contrast with OpenFaaS, Fission's documentation isn't as extensive
-
-Fission doesn't have a documentation as extensive as
-
-Fission's devel
-
-Fission has the most powerful approach to serverless computing has a stepper
-learning curve. The concept of _environments_ creates some friction between the
-developer and the
-
-- El CLI permite crear specs
-- Se pueden desplegar ficheros individuales
-- No requiere de docker
-
-Fission
-
-As previously stated, Fission in
--->
+[^6]: https://fission.io/docs/concepts/#environments
+[^7]: https://fission.io/docs/architecture/executor/#poolmanager
+[^8]: https://fission.io/docs/architecture/executor/#new-deployment
 
 # OpenWhisk
 

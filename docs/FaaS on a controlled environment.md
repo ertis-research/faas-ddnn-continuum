@@ -58,7 +58,7 @@ context of IoT
 
 It's a Kubernetes-native serverless platform featured on the Cloud Native
 Landscape. It's licensed under the MIT license and it currently holds the title
-for most stars of any installable serverless platform in GitHub, with over 22k
+for most stars of any hosted serverless platform in GitHub, with over 22k
 stars[^2]. OpenFaaS also offers a paid version, OpenFaaS Pro, which builds upon
 the open source project to deliver some additional features and commercial
 support

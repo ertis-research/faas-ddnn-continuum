@@ -1,0 +1,6 @@
+packages:
+  default:
+    actions:
+      redis-glue:
+        function: out/out.zip
+        runtime: python:3

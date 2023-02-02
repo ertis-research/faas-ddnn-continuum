@@ -40,6 +40,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  # kubectl get ingressClass
   ingressClassName: contour
   rules:
     - http:

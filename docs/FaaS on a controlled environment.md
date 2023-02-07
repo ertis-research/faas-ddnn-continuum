@@ -6,6 +6,16 @@ title: FaaS on a controlled environment
 ---
 
 <!--
+# Compile this document with the following command to remove 80 characters line
+# break
+pandoc --from=markdown --to=latex docs/FaaS\ on\ a\ controlled\ environment.md \
+ | tr '\n' ';' \
+ | sed 's/;;/\n\n/g' \
+ | sed 's/;/ /g' \
+ | sed 's/  / /g'
+-->
+
+<!--
 recursos:
   - https://dl.acm.org/doi/10.1145/3565382.3565878
 notas:

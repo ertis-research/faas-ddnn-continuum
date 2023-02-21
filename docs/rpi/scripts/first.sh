@@ -20,4 +20,8 @@ static domain_name_servers=1.1.1.1
 " > /tmp/dhcpcd.conf
 cp /tmp/dhcpcd.conf /etc/dhcpcd.conf
 
+# See https://github.com/k3s-io/k3s/issues/703#issuecomment-522355829
+sudo iptables -F
+sudo update-alternatives --set iptables /usr/sbin/iptables-legacy
+
 shutdown -h now

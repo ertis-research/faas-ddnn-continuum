@@ -17,4 +17,4 @@ functions:
     # desplegado un contenedor `registry`
     #
     # Más información: https://docs.docker.com/registry/
-    image: "192.168.43.232:5000/echo:latest"
+    image: "192.168.43.7:30501/echo:latest"

@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-connector-config
+data:
+  config.json: |-
+    {
+      "topic": "test",
+      "brokers": [
+        "kafka-0.kafka-headless.kafka:9092",
+        "kafka-1.kafka-headless.kafka:9092",
+        "kafka-2.kafka-headless.kafka:9092",
+        "kafka-3.kafka-headless.kafka:9092",
+        "kafka-4.kafka-headless.kafka:9092",
+        "kafka-5.kafka-headless.kafka:9092"
+      ],
+      "callback": {
+        "url": "http://192.168.43.7:3003",
+        "options": {
+          "method": "POST"
+        }
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connector
+  labels:
+    name: kafka-connector
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      name: kafka-connector
+  template:
+    metadata:
+      labels:
+        name: kafka-connector
+    spec:
+      containers:
+        - name: kafka-connector
+          image: 10.10.32.232:30501/kafka-connector
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/kafkac"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: kafka-connector-config

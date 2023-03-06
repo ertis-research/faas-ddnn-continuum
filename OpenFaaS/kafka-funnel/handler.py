@@ -1,6 +1,6 @@
 from kafka3 import KafkaProducer
 from functools import lru_cache
-from json import loads
+from json import loads, dumps
 from os import environ
 
 @lru_cache(maxsize=None)
@@ -19,7 +19,7 @@ def handle(event, context):
 
     producer.send(
         payload["topic"],
-        str(payload["value"]).encode(),
+        dumps({"value": payload["value"]}).encode(),
         **kwargs
     ).get(timeout=30)
     

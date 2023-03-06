@@ -15,10 +15,7 @@ def payload(start: int, end: int):
     
     (x_train, y_train), (x_test, y_test) = mnist()
     value = x_test[start:end]
-    d = {
-        "value": value
-    }
-    return dumps(d, cls=NumpyEncoder)
+    return dumps({"value": value}, cls=NumpyEncoder)
 
 app = Typer()
 

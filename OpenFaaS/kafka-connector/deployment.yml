@@ -5,7 +5,7 @@ metadata:
 data:
   config.json: |-
     {
-      "topic": "test",
+      "topic": "inference-input",
       "brokers": [
         "kafka-0.kafka-headless.kafka:9092",
         "kafka-1.kafka-headless.kafka:9092",
@@ -15,9 +15,10 @@ data:
         "kafka-5.kafka-headless.kafka:9092"
       ],
       "callback": {
-        "url": "http://192.168.43.7:3003",
+        "url": "http://gateway.openfaas:8080/async-function/inference-edge",
         "options": {
-          "method": "POST"
+          "method": "POST",
+          "keepalive": true
         }
       }
     }
@@ -29,6 +30,7 @@ metadata:
   name: kafka-connector
   labels:
     name: kafka-connector
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 4
   selector:

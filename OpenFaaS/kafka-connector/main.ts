@@ -32,18 +32,20 @@ const consumer = kafka.consumer({ groupId: "openfaas-kafka-connector" });
 await consumer.connect();
 await consumer.subscribe({ topics: [config.topic] });
 
-Deno.addSignalListener("SIGINT", async () => {
+Deno.addSignalListener("SIGTERM", async () => {
   await consumer.disconnect();
   Deno.exit();
 });
 
 async function handle({ topic, partition, message, heartbeat, pause }: any) {
+  const valueStr = message.value.toString();
+  const payload = JSON.parse(valueStr);
   const response = await fetch(config.callback.url, {
     ...config.callback.options,
     body: JSON.stringify({
       ...message,
       key: message.key?.toString(),
-      value: message.value?.toString(),
+      value: payload.value,
     }),
   });
   return {

@@ -21,6 +21,7 @@ def handle(event, context):
         environ["FUNNEL_TOPIC"],
         dumps(payload).encode(),
         **kwargs
-    ).get(timeout=30)
+    )
+    producer.flush()
     
     return {"statusCode": 200}

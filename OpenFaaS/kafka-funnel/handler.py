@@ -18,8 +18,8 @@ def handle(event, context):
     kwargs = get_producer_options()
 
     producer.send(
-        payload["topic"],
-        dumps({"value": payload["value"]}).encode(),
+        environ["FUNNEL_TOPIC"],
+        dumps(payload).encode(),
         **kwargs
     ).get(timeout=30)
     

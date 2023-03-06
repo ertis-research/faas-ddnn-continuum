@@ -8,11 +8,9 @@ import requests
 
 class ExitSettings(BaseModel):
     url: HttpUrl
-    topic: str
 
 class NextSettings(BaseModel):
     url: HttpUrl
-    topic: str
     confidence: float
 
 class Config(BaseSettings):
@@ -35,9 +33,10 @@ def model(model: str):
 def handle(event, context):
     config = get_config()
     payload = loads(event.body)
+    # raise ValueError(payload)
     value = payload["value"]
     m = model(config.model)
-    # raise ValueError(m.summary())
+    # raise ValueError(value)
     prediction: NDArray | List[NDArray] = m.predict(value)
 
     # if middle layer, distributed ML
@@ -57,7 +56,6 @@ def handle(event, context):
     response = requests.post(
         request.url, 
         json={
-            "topic": request.topic,
             "value": request_payload.tolist()
         }
     )

@@ -35,10 +35,10 @@ carpeta `/docs`
 export FISSION_NAMESPACE="fission"
 # Si no existe el namespace
 kubectl create namespace $FISSION_NAMESPACE
-kubectl create -k "github.com/fission/fission/crds/v1?ref=v1.17.0"
+kubectl create -k "github.com/fission/fission/crds/v1?ref=v1.18.0"
 helm repo add fission-charts https://fission.github.io/fission-charts/
 helm repo update
-helm install --version v1.17.0 -f values.yaml --namespace $FISSION_NAMESPACE fission fission-charts/fission-all
+helm install --version v1.18.0 -f values.yaml --namespace $FISSION_NAMESPACE fission fission-charts/fission-all
 ```
 
 # Fission CLI

@@ -29,6 +29,10 @@ helm repo add openfaas https://openfaas.github.io/faas-netes/
 helm repo update
 # Instalar OpenFaaS
 helm upgrade openfaas --install openfaas/openfaas --namespace openfaas -f values.yml
+
+# Aplicar parches
+kubectl apply -f patch.yml
+kubectl delete pod -l app=prometheus -n openfaas
 ```
 
 # faas-cli

@@ -1,26 +1,37 @@
 from kafka3 import KafkaProducer
+from pydantic import BaseSettings
 from functools import lru_cache
 from json import loads, dumps
-from os import environ
+
+class Config(BaseSettings):
+    producer: dict
+    topic: str
+
+    class Config:
+        env_nested_delimiter = "_"
+        frozen = True
+        env_prefix = "FUNNEL_"
+
+@lru_cache(maxsize=None)
+def get_config():
+    return Config()
 
 @lru_cache(maxsize=None)
 def get_producer():
-    args = loads(environ["FUNNEL_PRODUCER"])
-    return KafkaProducer(**args)
-
-@lru_cache(maxsize=None)
-def get_producer_options():
-    return loads(environ.get("FUNNEL_SEND", default="{}"))
+    config = get_config()
+    return KafkaProducer(**config.producer)
 
 def handle(event, context):
-    payload = loads(event.body)
+    payload: dict = loads(event.body)
     producer = get_producer()
-    kwargs = get_producer_options()
-
+    config = get_config()
+    key = payload["key"].encode() if "key" in payload else None
+    headers = [(k,v.encode()) for k,v in payload.get("headers", {}).items()]
     producer.send(
-        environ["FUNNEL_TOPIC"],
-        dumps(payload).encode(),
-        **kwargs
+        config.topic,
+        dumps(payload["value"]).encode(),
+        key=key,
+        headers=headers
     )
     producer.flush()
     

@@ -38,14 +38,19 @@ Deno.addSignalListener("SIGTERM", async () => {
 });
 
 async function handle({ topic, partition, message, heartbeat, pause }: any) {
-  const valueStr = message.value.toString();
-  const payload = JSON.parse(valueStr);
+  const headers = Object.fromEntries(
+    Object.entries(message.headers).map(([key, value]: any) => [
+      key,
+      value.toString(),
+    ])
+  );
   const response = await fetch(config.callback.url, {
     ...config.callback.options,
     body: JSON.stringify({
       ...message,
       key: message.key?.toString(),
-      value: payload.value,
+      value: JSON.parse(message.value),
+      headers,
     }),
   });
   return {

@@ -4,6 +4,8 @@ from kafka3 import KafkaProducer
 from functools import lru_cache
 from typing import List
 from json import dumps
+from uuid import uuid4
+from time import time
 
 from lib import NumpyEncoder
 
@@ -16,7 +18,7 @@ def mnist():
 def payload(start: int, end: int):    
     (x_train, y_train), (test, y_test) = mnist()
     value = test[start:end]
-    return dumps({"value": value}, cls=NumpyEncoder)
+    return dumps(value, cls=NumpyEncoder)
 
 app = Typer()
 
@@ -31,7 +33,7 @@ def kafka(topic: str, brokers: List[str], blocksize: int = 1, offset: int = 0, m
 
     for i in range(messages):
         p = payload(offset + i * blocksize, offset + (1 + i * blocksize))
-        producer.send(topic, p.encode())
+        producer.send(topic, p.encode(), key=str(uuid4()).encode(), headers=[("X-INFERENCE-TS", str(time()).encode())])
 
     producer.flush()
     

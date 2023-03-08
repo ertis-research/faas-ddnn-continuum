@@ -53,12 +53,8 @@ def handle(event, context):
         request = config.exit
         request_payload = prediction
 
-    response = requests.post(
-        request.url, 
-        json={
-            "value": request_payload.tolist()
-        }
-    )
+    payload["value"] = request_payload.tolist()
+    response = requests.post(request.url, json=payload)
     
     return {
         "statusCode": response.status_code,

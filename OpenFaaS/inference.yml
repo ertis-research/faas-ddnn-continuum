@@ -11,7 +11,7 @@ functions:
     label:
       com.openfaas.scale.max: 10
     environment:
-      FUNNEL_TOPIC: inference-early-edge
+      FUNNEL_TOPIC: openfaas.inference.edge-output
       FUNNEL_PRODUCER: >
         {
           "bootstrap_servers": [
@@ -29,7 +29,7 @@ functions:
     handler: ./kafka-funnel
     image: ${DOCKER_PREFIX:-registry.hub.docker.com}/kafka-funnel:latest
     environment:
-      FUNNEL_TOPIC: inference-early-fog
+      FUNNEL_TOPIC: openfaas.inference.fog-output
       FUNNEL_PRODUCER: >
         {
           "bootstrap_servers": [
@@ -49,7 +49,7 @@ functions:
     label:
       com.openfaas.scale.max: 10
     environment:
-      FUNNEL_TOPIC: inference-exit
+      FUNNEL_TOPIC: openfaas.inference.cloud-output
       FUNNEL_PRODUCER: >
         {
           "bootstrap_servers": [
@@ -99,7 +99,6 @@ functions:
       MODEL: "function/fog.h5"
       EXIT_URL: http://gateway.openfaas:8080/async-function/kafka-exit-fog
       NEXT_URL: http://gateway.openfaas:8080/async-function/inference-cloud
-      NEXT_TOPIC: inference-next-fog
       NEXT_CONFIDENCE: .50
 
       write_timeout: 10m
@@ -125,7 +124,6 @@ functions:
     environment:
       MODEL: "function/cloud.h5"
       EXIT_URL: http://gateway.openfaas:8080/async-function/kafka-exit-cloud
-      EXIT_TOPIC: inference-exit
 
       write_timeout: 10m
       read_timeout: 10m
@@ -149,7 +147,6 @@ functions:
     environment:
       MODEL: "function/test.h5"
       EXIT_URL: http://gateway.openfaas:8080/async-function/kafka-funnel
-      EXIT_TOPIC: test-exit
 
       write_timeout: 10m
       read_timeout: 10m

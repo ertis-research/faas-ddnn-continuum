@@ -5,7 +5,7 @@ metadata:
 data:
   config.json: |-
     {
-      "topic": "inference-input",
+      "topic": "openfaas.inference.edge-input",
       "brokers": [
         "kafka-0.kafka-headless.kafka:9092",
         "kafka-1.kafka-headless.kafka:9092",

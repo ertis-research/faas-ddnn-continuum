@@ -1,0 +1,25 @@
+apiVersion: fission.io/v1
+kind: MessageQueueTrigger
+metadata:
+  creationTimestamp: null
+  name: kafka-py-conn
+spec:
+  contentType: application/json
+  cooldownPeriod: 30
+  errorTopic: test-error
+  functionref:
+    functionweights: null
+    name: kafka-py
+    type: name
+  maxReplicaCount: 100
+  maxRetries: 3
+  messageQueueType: kafka
+  metadata:
+    bootstrapServers: kafka.kafka:9092
+    consumerGroup: kafka-py
+    topic: test-input
+  minReplicaCount: 0
+  mqtkind: keda
+  pollingInterval: 5
+  respTopic: test-output
+  topic: test-input

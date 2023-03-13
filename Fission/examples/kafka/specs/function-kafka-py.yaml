@@ -1,0 +1,52 @@
+include:
+- __init__.py
+kind: ArchiveUploadSpec
+name: init---py-Exqa
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: kafka-py-add7538a-ec04-4c96-b396-57eac5fbc8c5
+spec:
+  deployment:
+    checksum: {}
+    type: url
+    url: archive://init---py-Exqa
+  environment:
+    name: python
+    namespace: ""
+  source:
+    checksum: {}
+status:
+  buildstatus: none
+  lastUpdateTimestamp: "2023-03-13T09:18:35Z"
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: kafka-py
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: poolmgr
+      MaxScale: 0
+      MinScale: 0
+      SpecializationTimeout: 120
+      TargetCPUPercent: 0
+    StrategyType: execution
+  concurrency: 500
+  environment:
+    name: python
+    namespace: ""
+  functionTimeout: 60
+  idletimeout: 120
+  package:
+    packageref:
+      name: kafka-py-add7538a-ec04-4c96-b396-57eac5fbc8c5
+      namespace: ""
+  requestsPerPod: 1
+  resources: {}

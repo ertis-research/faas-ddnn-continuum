@@ -1,0 +1,148 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-connector-config
+data:
+  config.json: |-
+    {
+      "brokers": [
+        "kafka-0.kafka-headless.kafka:9092",
+        "kafka-1.kafka-headless.kafka:9092",
+        "kafka-2.kafka-headless.kafka:9092",
+        "kafka-3.kafka-headless.kafka:9092",
+        "kafka-4.kafka-headless.kafka:9092",
+        "kafka-5.kafka-headless.kafka:9092"
+      ],
+      "callback": {
+        "options": {
+          "method": "POST",
+          "keepalive": true
+        }
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connector-fission-edge-input
+  labels:
+    name: kafka-connector-fission-edge-input
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kafka-connector-fission-edge-input
+  template:
+    metadata:
+      labels:
+        name: kafka-connector-fission-edge-input
+    spec:
+      containers:
+        - name: connector
+          image: 10.10.32.232:30501/kafka-connector:0.0.6
+          imagePullPolicy: Always
+          env:
+            - name: KAFKAC_CLIENTID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: KAFKAC_TOPIC
+              value: "fission.inference.edge-input"
+            - name: KAFKAC_GROUPID
+              value: "fission.inference.edge-input"
+            - name: KAFKAC_CALLBACK_URL
+              value: http://router.fission/edge
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/kafkac"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: kafka-connector-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connector-fission-fog-input
+  labels:
+    name: kafka-connector-fission-fog-input
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kafka-connector-fission-fog-input
+  template:
+    metadata:
+      labels:
+        name: kafka-connector-fission-fog-input
+    spec:
+      containers:
+        - name: connector
+          image: 10.10.32.232:30501/kafka-connector:0.0.6
+          imagePullPolicy: Always
+          env:
+            - name: KAFKAC_CLIENTID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: KAFKAC_TOPIC
+              value: "fission.inference.fog-input"
+            - name: KAFKAC_GROUPID
+              value: "fission.inference.fog-input"
+            - name: KAFKAC_CALLBACK_URL
+              value: http://router.fission/fog
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/kafkac"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: kafka-connector-config
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connector-fission-cloud-input
+  labels:
+    name: kafka-connector-fission-cloud-input
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kafka-connector-fission-cloud-input
+  template:
+    metadata:
+      labels:
+        name: kafka-connector-fission-cloud-input
+    spec:
+      containers:
+        - name: connector
+          image: 10.10.32.232:30501/kafka-connector:0.0.6
+          imagePullPolicy: Always
+          env:
+            - name: KAFKAC_CLIENTID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: KAFKAC_TOPIC
+              value: "fission.inference.cloud-input"
+            - name: KAFKAC_GROUPID
+              value: "fission.inference.cloud-input"
+            - name: KAFKAC_CALLBACK_URL
+              value: http://router.fission/cloud
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/kafkac"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: kafka-connector-config

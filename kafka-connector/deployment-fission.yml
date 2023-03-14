@@ -42,7 +42,7 @@ spec:
     spec:
       containers:
         - name: connector
-          image: 10.10.32.232:30501/kafka-connector:0.0.10
+          image: 10.10.32.232:30501/kafka-connector:0.0.12
           imagePullPolicy: Always
           env:
             - name: KAFKAC_CLIENTID
@@ -83,7 +83,7 @@ spec:
     spec:
       containers:
         - name: connector
-          image: 10.10.32.232:30501/kafka-connector:0.0.10
+          image: 10.10.32.232:30501/kafka-connector:0.0.12
           imagePullPolicy: Always
           env:
             - name: KAFKAC_CLIENTID
@@ -125,7 +125,7 @@ spec:
     spec:
       containers:
         - name: connector
-          image: 10.10.32.232:30501/kafka-connector:0.0.10
+          image: 10.10.32.232:30501/kafka-connector:0.0.12
           imagePullPolicy: Always
           env:
             - name: KAFKAC_CLIENTID

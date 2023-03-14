@@ -5,5 +5,6 @@ RUN mkdir /app
 RUN mkdir -p /etc/kafkac
 WORKDIR /app
 COPY deno.* *.ts ./
-RUN deno cache --lock=deno.lock main.ts
-ENTRYPOINT ["deno", "run", "--allow-env", "--allow-net", "--allow-read", "-q", "main.ts"]
+RUN deno vendor --lock=deno.lock *.ts
+ENTRYPOINT ["deno"]
+CMD ["run", "--allow-env", "--allow-net", "--allow-read", "-q", "--no-prompt", "--lock=deno.lock", "--config=deno.jsonc", "main.ts"]

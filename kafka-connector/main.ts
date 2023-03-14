@@ -3,7 +3,7 @@ import {
   getConfig,
   EnvExtractor,
   JsonExtractor,
-} from "https://deno.land/x/chimera@v1.0.29/mod.ts";
+} from "https://deno.land/x/chimera@v1.1.0/mod.ts";
 import { z } from "https://deno.land/x/zod@v3.21.0/mod.ts";
 import * as log from "https://deno.land/std@0.151.0/log/mod.ts";
 
@@ -18,6 +18,7 @@ const CONFIG_SCHEME = z.object({
   callback: z.object({
     url: z.string().transform((x) => new URL(x)),
     retries: z.number().min(0).default(5),
+    retrySleep: z.number().positive().optional(),
     options: z.any().default({}),
   }),
 });
@@ -58,7 +59,6 @@ await consumer.subscribe({ topics: config.topic });
 
 Deno.addSignalListener("SIGTERM", async () => {
   await consumer.disconnect();
-  Deno.exit();
 });
 
 async function handle({ topic, partition, message, heartbeat, pause }: any) {
@@ -87,6 +87,11 @@ async function handle({ topic, partition, message, heartbeat, pause }: any) {
     });
     if (response.ok) {
       break;
+    }
+    if (config.callback.retrySleep) {
+      await new Promise((resolve) =>
+        setTimeout(resolve, config.callback.retrySleep)
+      );
     }
   }
   return attempts;

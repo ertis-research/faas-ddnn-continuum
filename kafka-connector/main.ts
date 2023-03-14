@@ -17,6 +17,7 @@ const CONFIG_SCHEME = z.object({
   groupid: z.string().default("kafka-connector"),
   callback: z.object({
     url: z.string().transform((x) => new URL(x)),
+    retries: z.number().min(0).default(3),
     options: z.any().default({}),
   }),
 });
@@ -50,20 +51,28 @@ async function handle({ topic, partition, message, heartbeat, pause }: any) {
       value.toString(),
     ])
   );
-  const response = await fetch(config.callback.url, {
-    ...config.callback.options,
-    body: JSON.stringify({
-      ...message,
-      key: message.key?.toString(),
-      value: JSON.parse(message.value),
-      headers,
-    }),
-  });
-  return {
-    timestamp: new Date(),
-    status: response.status,
-    body: await response.text(),
-  };
+
+  const attempts = [];
+  for (let i = 0; i <= config.callback.retries; i++) {
+    const response = await fetch(config.callback.url, {
+      ...config.callback.options,
+      body: JSON.stringify({
+        ...message,
+        key: message.key?.toString(),
+        value: JSON.parse(message.value),
+        headers,
+      }),
+    });
+    attempts.push({
+      timestamp: new Date(),
+      status: response.status,
+      body: await response.text(),
+    });
+    if (response.ok) {
+      break;
+    }
+  }
+  return attempts;
 }
 
 await consumer.run({

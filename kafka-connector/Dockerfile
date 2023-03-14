@@ -1,6 +1,6 @@
 # docker build -t 192.168.43.7:30501/kafka-connector . 
 # docker push 192.168.43.7:30501/kafka-connector
-FROM denoland/deno:1.31.1
+FROM denoland/deno:1.31.2
 RUN mkdir /app
 RUN mkdir -p /etc/kafkac
 WORKDIR /app

@@ -1,4 +1,4 @@
-import { Kafka } from "npm:kafkajs@2.2.4";
+import { Kafka, logLevel } from "npm:kafkajs@2.2.4";
 import {
   getConfig,
   EnvExtractor,
@@ -17,7 +17,7 @@ const CONFIG_SCHEME = z.object({
   groupid: z.string().default("kafka-connector"),
   callback: z.object({
     url: z.string().transform((x) => new URL(x)),
-    retries: z.number().min(0).default(3),
+    retries: z.number().min(0).default(5),
     options: z.any().default({}),
   }),
 });
@@ -34,6 +34,23 @@ log.info({ config });
 const kafka = new Kafka({
   brokers: config.brokers,
   clientId: config.clientid,
+  logCreator:
+    () =>
+    ({ level, label, ...kafkajs }: any) => {
+      switch (level) {
+        case logLevel.ERROR:
+          log.error({ kafkajs });
+          break;
+        case logLevel.WARN:
+          log.warning({ kafkajs });
+          break;
+        case logLevel.INFO:
+          log.info({ kafkajs });
+          break;
+        default:
+          log.debug({ kafkajs });
+      }
+    },
 });
 const consumer = kafka.consumer({ groupId: config.groupid });
 await consumer.connect();
@@ -77,7 +94,6 @@ async function handle({ topic, partition, message, heartbeat, pause }: any) {
 
 await consumer.run({
   eachMessage: (payload: unknown) => {
-    log.debug({ payload });
     handle(payload)
       .then((response) => log.info({ response }))
       .catch((response) => log.error({ response }));

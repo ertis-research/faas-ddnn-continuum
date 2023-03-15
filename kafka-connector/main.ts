@@ -61,13 +61,15 @@ Deno.addSignalListener("SIGTERM", async () => {
   await consumer.disconnect();
 });
 
+function sleep(time: number): Promise<number> {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 async function handle({ topic, partition, message, heartbeat, pause }: any) {
-  const headers = Object.fromEntries(
-    Object.entries(message.headers).map(([key, value]: any) => [
-      key,
-      value.toString(),
-    ])
+  const headersList = Object.entries(message.headers).map(
+    ([key, value]: [string, unknown]) => [key, String(value)]
   );
+  const headers = Object.fromEntries(headersList);
 
   const attempts = [];
   for (let i = 0; i <= config.callback.retries; i++) {
@@ -89,9 +91,7 @@ async function handle({ topic, partition, message, heartbeat, pause }: any) {
       break;
     }
     if (config.callback.retrySleep) {
-      await new Promise((resolve) =>
-        setTimeout(resolve, config.callback.retrySleep)
-      );
+      await sleep(config.callback.retrySleep);
     }
   }
   return attempts;
@@ -99,7 +99,7 @@ async function handle({ topic, partition, message, heartbeat, pause }: any) {
 
 await consumer.run({
   eachMessage: (payload: unknown) => {
-    handle(payload)
+    return handle(payload)
       .then((response) => log.info({ response }))
       .catch((response) => log.error({ response }));
   },

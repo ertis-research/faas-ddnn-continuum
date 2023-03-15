@@ -15,6 +15,7 @@ const CONFIG_SCHEME = z.object({
     .or(z.string().transform((x) => [x])),
   clientid: z.string().default("kafka-connector"),
   groupid: z.string().default("kafka-connector"),
+  concurrency: z.number().positive().default(1),
   callback: z.object({
     url: z.string().transform((x) => new URL(x)),
     retries: z.number().min(0).default(5),
@@ -98,6 +99,7 @@ async function handle({ topic, partition, message, heartbeat, pause }: any) {
 }
 
 await consumer.run({
+  partitionsConsumedConcurrently: config.concurrency,
   eachMessage: (payload: unknown) => {
     return handle(payload)
       .then((response) => log.info({ response }))

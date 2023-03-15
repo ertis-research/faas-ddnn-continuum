@@ -5,18 +5,12 @@ metadata:
 data:
   config.json: |-
     {
-      "topic": "openfaas.inference.edge-input",
-      "groupid": "openfaas.inference.edge-input",
+      "concurrency": 10,
       "brokers": [
         "kafka-0.kafka-headless.kafka:9092",
-        "kafka-1.kafka-headless.kafka:9092",
-        "kafka-2.kafka-headless.kafka:9092",
-        "kafka-3.kafka-headless.kafka:9092",
-        "kafka-4.kafka-headless.kafka:9092",
-        "kafka-5.kafka-headless.kafka:9092"
+        "kafka-1.kafka-headless.kafka:9092"
       ],
       "callback": {
-        "url": "http://gateway.openfaas:8080/async-function/inference-edge",
         "options": {
           "method": "POST",
           "keepalive": true
@@ -28,29 +22,119 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kafka-connector-openfaas
+  name: kafka-connector-openfaas-edge-input
   labels:
-    name: kafka-connector-openfaas
+    name: kafka-connector-openfaas-edge-input
     reloader.stakater.com/auto: "true"
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      name: kafka-connector-openfaas
+      name: kafka-connector-openfaas-edge-input
   template:
     metadata:
       labels:
-        name: kafka-connector-openfaas
+        name: kafka-connector-openfaas-edge-input
     spec:
       containers:
         - name: connector
-          image: 10.10.32.232:30501/kafka-connector:0.0.13
+          image: 10.10.32.232:30501/kafka-connector:0.0.16
           imagePullPolicy: Always
           env:
             - name: KAFKAC_CLIENTID
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            - name: KAFKAC_TOPIC
+              value: "openfaas.inference.edge-input"
+            - name: KAFKAC_GROUPID
+              value: "openfaas.inference.edge-input"
+            - name: KAFKAC_CALLBACK_URL
+              value: http://gateway.openfaas:8080/function/edge
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/kafkac"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: kafka-connector-openfaas-config
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connector-openfaas-fog-input
+  labels:
+    name: kafka-connector-openfaas-fog-input
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kafka-connector-openfaas-fog-input
+  template:
+    metadata:
+      labels:
+        name: kafka-connector-openfaas-fog-input
+    spec:
+      containers:
+        - name: connector
+          image: 10.10.32.232:30501/kafka-connector:0.0.16
+          imagePullPolicy: Always
+          env:
+            - name: KAFKAC_CLIENTID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: KAFKAC_TOPIC
+              value: "openfaas.inference.fog-input"
+            - name: KAFKAC_GROUPID
+              value: "openfaas.inference.fog-input"
+            - name: KAFKAC_CALLBACK_URL
+              value: http://gateway.openfaas:8080/function/fog
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/kafkac"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: kafka-connector-openfaas-config
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connector-openfaas-cloud-input
+  labels:
+    name: kafka-connector-openfaas-cloud-input
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kafka-connector-openfaas-cloud-input
+  template:
+    metadata:
+      labels:
+        name: kafka-connector-openfaas-cloud-input
+    spec:
+      containers:
+        - name: connector
+          image: 10.10.32.232:30501/kafka-connector:0.0.16
+          imagePullPolicy: Always
+          env:
+            - name: KAFKAC_CLIENTID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: KAFKAC_TOPIC
+              value: "openfaas.inference.cloud-input"
+            - name: KAFKAC_GROUPID
+              value: "openfaas.inference.cloud-input"
+            - name: KAFKAC_CALLBACK_URL
+              value: http://gateway.openfaas:8080/function/cloud
           volumeMounts:
             - name: config
               mountPath: "/etc/kafkac"

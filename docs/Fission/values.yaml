@@ -1,3 +1,7 @@
+# Scale router to all nodes
+router:
+  deployAsDaemonSet: true
+
 mqt_keda:
   enabled: true
 

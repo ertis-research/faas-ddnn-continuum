@@ -4,7 +4,7 @@ provider:
   name: openfaas
   gateway: http://192.168.43.7:31112
 functions:
-  kafka-exit-edge:
+  funnel-edge-output:
     lang: python3-http
     handler: ./kafka-funnel
     image: ${DOCKER_PREFIX:-registry.hub.docker.com}/kafka-funnel:latest
@@ -14,35 +14,63 @@ functions:
       FUNNEL_TOPIC: openfaas.inference.edge-output
       FUNNEL_PRODUCER: >
         {
-          "bootstrap_servers": [
-            "kafka-0.kafka-headless.kafka:9092",
-            "kafka-1.kafka-headless.kafka:9092",
-            "kafka-2.kafka-headless.kafka:9092",
-            "kafka-3.kafka-headless.kafka:9092",
-            "kafka-4.kafka-headless.kafka:9092",
-            "kafka-5.kafka-headless.kafka:9092"
-          ]
+          "bootstrap_servers":
+            [
+              "kafka-0.kafka-headless.kafka:9092",
+              "kafka-1.kafka-headless.kafka:9092"
+            ]
         }
 
-  kafka-exit-fog:
+  funnel-fog-input:
     lang: python3-http
     handler: ./kafka-funnel
     image: ${DOCKER_PREFIX:-registry.hub.docker.com}/kafka-funnel:latest
+    label:
+      com.openfaas.scale.max: 10
+    environment:
+      FUNNEL_TOPIC: openfaas.inference.fog-input
+      FUNNEL_PRODUCER: >
+        {
+          "bootstrap_servers":
+            [
+              "kafka-0.kafka-headless.kafka:9092",
+              "kafka-1.kafka-headless.kafka:9092"
+            ]
+        }
+
+  funnel-fog-output:
+    lang: python3-http
+    handler: ./kafka-funnel
+    image: ${DOCKER_PREFIX:-registry.hub.docker.com}/kafka-funnel:latest
+    label:
+      com.openfaas.scale.max: 10
     environment:
       FUNNEL_TOPIC: openfaas.inference.fog-output
       FUNNEL_PRODUCER: >
         {
           "bootstrap_servers": [
-            "kafka-0.kafka-headless.kafka:9092",
-            "kafka-1.kafka-headless.kafka:9092",
-            "kafka-2.kafka-headless.kafka:9092",
-            "kafka-3.kafka-headless.kafka:9092",
-            "kafka-4.kafka-headless.kafka:9092",
-            "kafka-5.kafka-headless.kafka:9092"
-          ]
+              "kafka-0.kafka-headless.kafka:9092",
+              "kafka-1.kafka-headless.kafka:9092"
+            ]
         }
 
-  kafka-exit-cloud:
+  funnel-cloud-input:
+    lang: python3-http
+    handler: ./kafka-funnel
+    image: ${DOCKER_PREFIX:-registry.hub.docker.com}/kafka-funnel:latest
+    label:
+      com.openfaas.scale.max: 10
+    environment:
+      FUNNEL_TOPIC: openfaas.inference.cloud-input
+      FUNNEL_PRODUCER: >
+        {
+          "bootstrap_servers": [
+              "kafka-0.kafka-headless.kafka:9092",
+              "kafka-1.kafka-headless.kafka:9092"
+            ]
+        }
+
+  funnel-cloud-output:
     lang: python3-http
     handler: ./kafka-funnel
     image: ${DOCKER_PREFIX:-registry.hub.docker.com}/kafka-funnel:latest
@@ -53,16 +81,12 @@ functions:
       FUNNEL_PRODUCER: >
         {
           "bootstrap_servers": [
-            "kafka-0.kafka-headless.kafka:9092",
-            "kafka-1.kafka-headless.kafka:9092",
-            "kafka-2.kafka-headless.kafka:9092",
-            "kafka-3.kafka-headless.kafka:9092",
-            "kafka-4.kafka-headless.kafka:9092",
-            "kafka-5.kafka-headless.kafka:9092"
-          ]
+              "kafka-0.kafka-headless.kafka:9092",
+              "kafka-1.kafka-headless.kafka:9092"
+            ]
         }
 
-  inference-edge:
+  edge:
     lang: python3-http-tensor
     handler: ./inference
     image: ${DOCKER_PREFIX:-registry.hub.docker.com}/inference:latest
@@ -71,24 +95,18 @@ functions:
       com.openfaas.scale.factor: 50%
     environment:
       MODEL: "function/edge.h5"
-      EXIT_URL: http://gateway.openfaas:8080/async-function/kafka-exit-edge
-      NEXT_URL: http://gateway.openfaas:8080/async-function/inference-fog
+      EXIT_URL: http://gateway.openfaas:8080/function/funnel-edge-output
+      NEXT_URL: http://gateway.openfaas:8080/function/funnel-fog-input
       NEXT_CONFIDENCE: .65
 
-      write_timeout: 10m
-      read_timeout: 10m
-      exec_timeout: 10m
-      handler_wait_duration: 10m
-      healthcheck_interval: 5s
-
     limits:
-      cpu: 4000m
+      cpu: 1000m
       memory: 1024Mi
     requests:
-      cpu: 4000m
+      cpu: 1000m
       memory: 1024Mi
 
-  inference-fog:
+  fog:
     lang: python3-http-tensor
     handler: ./inference
     image: ${DOCKER_PREFIX:-registry.hub.docker.com}/inference:latest
@@ -97,24 +115,18 @@ functions:
       com.openfaas.scale.factor: 50%
     environment:
       MODEL: "function/fog.h5"
-      EXIT_URL: http://gateway.openfaas:8080/async-function/kafka-exit-fog
-      NEXT_URL: http://gateway.openfaas:8080/async-function/inference-cloud
+      EXIT_URL: http://gateway.openfaas:8080/function/funnel-fog-output
+      NEXT_URL: http://gateway.openfaas:8080/function/funnel-cloud-input
       NEXT_CONFIDENCE: .50
 
-      write_timeout: 10m
-      read_timeout: 10m
-      exec_timeout: 10m
-      handler_wait_duration: 10m
-      healthcheck_interval: 5s
-
     limits:
-      cpu: 4000m
+      cpu: 1000m
       memory: 1024Mi
     requests:
-      cpu: 4000m
+      cpu: 1000m
       memory: 1024Mi
 
-  inference-cloud:
+  cloud:
     lang: python3-http-tensor
     handler: ./inference
     image: ${DOCKER_PREFIX:-registry.hub.docker.com}/inference:latest
@@ -123,22 +135,16 @@ functions:
       com.openfaas.scale.factor: 50%
     environment:
       MODEL: "function/cloud.h5"
-      EXIT_URL: http://gateway.openfaas:8080/async-function/kafka-exit-cloud
-
-      write_timeout: 10m
-      read_timeout: 10m
-      exec_timeout: 10m
-      handler_wait_duration: 10m
-      healthcheck_interval: 5s
+      EXIT_URL: http://gateway.openfaas:8080/function/funnel-cloud-output
 
     limits:
-      cpu: 4000m
+      cpu: 1000m
       memory: 1024Mi
     requests:
-      cpu: 4000m
+      cpu: 1000m
       memory: 1024Mi
 
-  inference-test:
+  test:
     lang: python3-http-tensor
     handler: ./inference
     image: ${DOCKER_PREFIX:-registry.hub.docker.com}/inference:latest
@@ -146,17 +152,4 @@ functions:
       com.openfaas.scale.max: 10
     environment:
       MODEL: "function/test.h5"
-      EXIT_URL: http://gateway.openfaas:8080/async-function/kafka-funnel
-
-      write_timeout: 10m
-      read_timeout: 10m
-      exec_timeout: 10m
-      handler_wait_duration: 10m
-      healthcheck_interval: 5s
-
-    limits:
-      cpu: 4000m
-      memory: 1024Mi
-    requests:
-      cpu: 4000m
-      memory: 1024Mi
+      EXIT_URL: http://gateway.openfaas:8080/function/kafka-funnel

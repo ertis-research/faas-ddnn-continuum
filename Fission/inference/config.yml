@@ -41,11 +41,7 @@ data:
       "producer":{
         "bootstrap_servers": [
           "kafka-0.kafka-headless.kafka:9092",
-          "kafka-1.kafka-headless.kafka:9092",
-          "kafka-2.kafka-headless.kafka:9092",
-          "kafka-3.kafka-headless.kafka:9092",
-          "kafka-4.kafka-headless.kafka:9092",
-          "kafka-5.kafka-headless.kafka:9092"
+          "kafka-1.kafka-headless.kafka:9092"
         ]
       }
     }
@@ -55,11 +51,7 @@ data:
       "producer":{
         "bootstrap_servers": [
           "kafka-0.kafka-headless.kafka:9092",
-          "kafka-1.kafka-headless.kafka:9092",
-          "kafka-2.kafka-headless.kafka:9092",
-          "kafka-3.kafka-headless.kafka:9092",
-          "kafka-4.kafka-headless.kafka:9092",
-          "kafka-5.kafka-headless.kafka:9092"
+          "kafka-1.kafka-headless.kafka:9092"
         ]
       }
     }
@@ -69,11 +61,7 @@ data:
       "producer":{
         "bootstrap_servers": [
           "kafka-0.kafka-headless.kafka:9092",
-          "kafka-1.kafka-headless.kafka:9092",
-          "kafka-2.kafka-headless.kafka:9092",
-          "kafka-3.kafka-headless.kafka:9092",
-          "kafka-4.kafka-headless.kafka:9092",
-          "kafka-5.kafka-headless.kafka:9092"
+          "kafka-1.kafka-headless.kafka:9092"
         ]
       }
     }
@@ -83,11 +71,7 @@ data:
       "producer":{
         "bootstrap_servers": [
           "kafka-0.kafka-headless.kafka:9092",
-          "kafka-1.kafka-headless.kafka:9092",
-          "kafka-2.kafka-headless.kafka:9092",
-          "kafka-3.kafka-headless.kafka:9092",
-          "kafka-4.kafka-headless.kafka:9092",
-          "kafka-5.kafka-headless.kafka:9092"
+          "kafka-1.kafka-headless.kafka:9092"
         ]
       }
     }
@@ -97,11 +81,7 @@ data:
       "producer":{
         "bootstrap_servers": [
           "kafka-0.kafka-headless.kafka:9092",
-          "kafka-1.kafka-headless.kafka:9092",
-          "kafka-2.kafka-headless.kafka:9092",
-          "kafka-3.kafka-headless.kafka:9092",
-          "kafka-4.kafka-headless.kafka:9092",
-          "kafka-5.kafka-headless.kafka:9092"
+          "kafka-1.kafka-headless.kafka:9092"
         ]
       }
     }

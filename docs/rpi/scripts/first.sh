@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ex
 
-# ssh -t -o "StrictHostKeyChecking=no" pi@rpi-builder 'sudo bash -s' < docs/rpi/scripts/first.sh
+# ssh -t -o "StrictHostKeyChecking=no" irpibuilder 'sudo bash -s' < docs/rpi/scripts/first.sh
 export CONFIG_STATIC_IP=192.168.49.184
 
 sudo echo -n ' cgroup_enable=memory cgroup_memory=1' >> /boot/cmdline.txt

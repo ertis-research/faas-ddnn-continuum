@@ -1,0 +1,10 @@
+# docker build -t 192.168.43.7:30501/kafka-connector . 
+# docker push 192.168.43.7:30501/kafka-connector
+FROM lukechannings/deno:v1.31.2
+RUN mkdir /app
+RUN mkdir -p /etc/kafkac
+WORKDIR /app
+COPY deno.* *.ts ./
+RUN deno vendor --lock=deno.lock *.ts
+ENTRYPOINT ["deno"]
+CMD ["run", "--allow-env", "--allow-net", "--allow-read", "-q", "--no-prompt", "--lock=deno.lock", "--config=deno.jsonc", "main.ts"]

@@ -1,0 +1,6 @@
+# /etc/rancher/k3s/registries.yaml
+# Add the certificate file to /etc/ertis/ca.cert
+configs:
+  "192.168.43.7:30501":
+    tls:
+      ca_file: "/etc/ertis/ca.cert"

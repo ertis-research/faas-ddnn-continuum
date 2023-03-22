@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-connector-openfaas-edge-input-config
+data:
+  config.json: |-
+    {
+      "concurrency": 100,
+      "topic": "openfaas.inference.edge-input",
+      "groupid": "openfaas.inference.edge-input",
+      "brokers": [
+        "kafka.kafka:9092"
+      ],
+      "callback": {
+        "url": "http://gateway.openfaas:8080/function/edge",
+        "options": {
+          "method": "POST",
+          "keepalive": true
+        }
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connector-openfaas-edge-input
+  labels:
+    name: kafka-connector-openfaas-edge-input
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kafka-connector-openfaas-edge-input
+  template:
+    metadata:
+      labels:
+        name: kafka-connector-openfaas-edge-input
+    spec:
+      containers:
+        - name: connector
+          image: 192.168.43.7:30501/kafka-connector:0.0.16
+          imagePullPolicy: Always
+          env:
+            - name: KAFKAC_CLIENTID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/kafkac"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: kafka-connector-openfaas-edge-input-config

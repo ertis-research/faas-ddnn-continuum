@@ -1,0 +1,15 @@
+replicaCount: 2
+deleteTopicEnable: true
+externalAccess:
+  enabled: true
+  service:
+    type: NodePort
+    domain: 192.168.43.7
+    nodePorts:
+      - "32001"
+      - "32002"
+persistence:
+  enabled: false
+zookeeper:
+  persistence:
+    enabled: false

@@ -1,0 +1,55 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://${DDNN_EDGE_IP}:${DDNN_EDGE_OPENFAAS_NODEPORT}
+functions:
+  edge:
+    lang: python3-http-tensor-arm
+    handler: ./edge
+    image: ${DOCKER_PREFIX:-registry.hub.docker.com}/edge:latest
+    label:
+      com.openfaas.scale.max: 20
+      com.openfaas.scale.factor: 50%
+    environment:
+      MODEL: "function/edge.h5"
+      EXIT_URL: http://gateway.openfaas:8080/function/funnel-edge-output
+      NEXT_URL: http://gateway.openfaas:8080/function/funnel-fog-input
+      NEXT_CONFIDENCE: .65
+
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+
+  funnel-edge-output:
+    lang: python3-http
+    handler: ./funnel
+    image: ${DOCKER_PREFIX:-registry.hub.docker.com}/funnel:latest
+    label:
+      com.openfaas.scale.max: 10
+    environment:
+      FUNNEL_TOPIC: openfaas.inference.edge-output
+      FUNNEL_PRODUCER: >
+        {
+          "bootstrap_servers": [
+              "${DDNN_EDGE_IP}:${DDNN_EDGE_KAFKA_NODEPORT1}",
+              "${DDNN_EDGE_IP}:${DDNN_EDGE_KAFKA_NODEPORT2}"
+            ]
+        }
+  funnel-fog-input:
+    lang: python3-http
+    handler: ./funnel
+    image: ${DOCKER_PREFIX:-registry.hub.docker.com}/funnel:latest
+    label:
+      com.openfaas.scale.max: 10
+    environment:
+      FUNNEL_TOPIC: openfaas.inference.fog-input
+      FUNNEL_PRODUCER: >
+        {
+          "bootstrap_servers": [
+              "kafka-0.kafka-headless.kafka:9092",
+              "kafka-1.kafka-headless.kafka:9092"
+            ]
+        }

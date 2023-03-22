@@ -1,0 +1,15 @@
+functionNamespace: openfaas-fn
+generateBasicAuth: true
+
+gateway:
+  readTimeout: "31m"
+  writeTimeout: "31m"
+  upstreamTimeout: "30m"
+  replicas: 4
+
+faasnetes:
+  writeTimeout: "31m"
+  readTimeout: "31m"
+
+queueWorker:
+  ackWait: "30m"

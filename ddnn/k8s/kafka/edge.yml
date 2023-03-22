@@ -1,0 +1,16 @@
+replicaCount: 1
+deleteTopicEnable: true
+externalAccess:
+  enabled: true
+  service:
+    type: NodePort
+    domain: 192.168.49.179
+    nodePorts:
+      - "32001"
+persistence:
+  enabled: false
+zookeeper:
+  image:
+    tag: 3.8.1-debian-11-r8 # First 3.8.1 release with arm support
+  persistence:
+    enabled: false

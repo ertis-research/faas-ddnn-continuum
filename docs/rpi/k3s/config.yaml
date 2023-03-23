@@ -1,1 +1,3 @@
-disable: traefik
+# Only on servers (masters): /etc/rancher/k3s/config.yaml
+disable:
+  - traefik

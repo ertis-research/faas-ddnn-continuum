@@ -5,7 +5,7 @@ gateway:
   readTimeout: "31m"
   writeTimeout: "31m"
   upstreamTimeout: "30m"
-  replicas: 4
+  replicas: 1
 
 faasnetes:
   writeTimeout: "31m"

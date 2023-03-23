@@ -1,5 +1,5 @@
-# docker build -t 192.168.43.7:30501/kafka-connector . 
-# docker push 192.168.43.7:30501/kafka-connector
+# docker build -t 192.168.43.7:30501/kafka-connector-arm . 
+# docker push 192.168.43.7:30501/kafka-connector-arm
 FROM lukechannings/deno:v1.31.2
 RUN mkdir /app
 RUN mkdir -p /etc/kafkac

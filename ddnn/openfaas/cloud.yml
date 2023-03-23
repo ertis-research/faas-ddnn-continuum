@@ -32,7 +32,6 @@ functions:
       FUNNEL_PRODUCER: >
         {
           "bootstrap_servers": [
-              "${DDNN_EDGE_IP}:${DDNN_EDGE_KAFKA_NODEPORT1}",
-              "${DDNN_EDGE_IP}:${DDNN_EDGE_KAFKA_NODEPORT2}"
+              "${DDNN_EDGE_IP}:${DDNN_EDGE_KAFKA_NODEPORT1}"
             ]
         }

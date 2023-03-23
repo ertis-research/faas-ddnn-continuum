@@ -34,8 +34,7 @@ functions:
       FUNNEL_PRODUCER: >
         {
           "bootstrap_servers": [
-              "${DDNN_EDGE_IP}:${DDNN_EDGE_KAFKA_NODEPORT1}",
-              "${DDNN_EDGE_IP}:${DDNN_EDGE_KAFKA_NODEPORT2}"
+              "${DDNN_EDGE_IP}:${DDNN_EDGE_KAFKA_NODEPORT1}"
             ]
         }
 
@@ -50,7 +49,6 @@ functions:
       FUNNEL_PRODUCER: >
         {
           "bootstrap_servers": [
-              "kafka-0.kafka-headless.kafka:9092",
-              "kafka-1.kafka-headless.kafka:9092"
+              "${DDNN_CLOUD_IP}:${DDNN_CLOUD_KAFKA_NODEPORT1}"
             ]
         }

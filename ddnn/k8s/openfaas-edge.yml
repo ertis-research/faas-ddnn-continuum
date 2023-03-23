@@ -5,7 +5,7 @@ metadata:
 data:
   config.json: |-
     {
-      "concurrency": 100,
+      "concurrency": 4096,
       "topic": "openfaas.inference.edge-input",
       "groupid": "openfaas.inference.edge-input",
       "brokers": [
@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
         - name: connector
-          image: 192.168.43.7:30501/kafka-connector:0.0.16
+          image: 192.168.43.7:30501/kafka-connector-arm:0.0.17
           imagePullPolicy: Always
           env:
             - name: KAFKAC_CLIENTID

@@ -1,11 +1,11 @@
-from typer import Typer
+from typer import Option, Typer
 from kafka3 import KafkaProducer
 
 from functools import lru_cache
 from typing import List
 from json import dumps
 from uuid import uuid4
-from time import time
+from time import time, sleep
 
 from lib import NumpyEncoder
 
@@ -28,14 +28,36 @@ def json(blocksize: int = 1, offset: int = 0):
     print(p)
 
 @app.command()
-def kafka(topic: str, brokers: List[str], blocksize: int = 1, offset: int = 0, messages: int = 5):
+def kafka(topic: str, brokers: List[str], batch_size: int = 1, offset: int = 0, messages: int = 5, batch_sleep: float = 0):
     producer = KafkaProducer(bootstrap_servers=brokers)
 
     for i in range(messages):
-        p = payload(offset + i * blocksize, offset + (1 + i * blocksize))
+        p = payload(offset + i * batch_size, offset + (1 + i * batch_size))
         producer.send(topic, p.encode(), key=str(uuid4()).encode(), headers=[("X-INFERENCE-TS", str(time()).encode())])
-
-    producer.flush()
+        producer.flush()
+        sleep(batch_sleep)
     
+    producer.close()
+
+@app.command()
+def bench(
+    topic: str = Option(...),
+    brokers: List[str] = Option(...),
+):
+    total_messages = 0
+
+    for stage in range(1, 5):
+        messages = 1_000
+        batch_sleep = 0.1 / (stage * 2)
+        total_messages += messages
+
+        kafka(topic, brokers,messages=messages, batch_sleep=batch_sleep)
+        print({
+            'stage': stage,
+            'messages': messages,
+            'batch_sleep': batch_sleep,
+            'total_messages': total_messages
+        })
+
 if __name__ == '__main__':
     app()

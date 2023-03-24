@@ -41,7 +41,7 @@ functions:
   funnel-cloud-input:
     lang: python3-http
     handler: ./funnel
-    image: ${DOCKER_PREFIX:-registry.hub.docker.com}/kafka-funnel:latest
+    image: ${DOCKER_PREFIX:-registry.hub.docker.com}/funnel:latest
     label:
       com.openfaas.scale.max: 10
     environment:

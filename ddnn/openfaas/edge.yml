@@ -26,7 +26,7 @@ functions:
   funnel-edge-output:
     lang: python3-http
     handler: ./funnel
-    image: ${DOCKER_PREFIX:-registry.hub.docker.com}/funnel:latest
+    image: ${DOCKER_PREFIX:-registry.hub.docker.com}/funnel-arm:latest
     label:
       com.openfaas.scale.max: 10
     environment:

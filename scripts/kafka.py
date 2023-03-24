@@ -19,6 +19,7 @@ def download(
 
     with open(output, 'a') as f:
         for (indx, msg) in enumerate(consumer):
+            print(msg.key)
             payload = {
                 'topic': msg.topic,
                 'partition': msg.partition,
@@ -31,6 +32,7 @@ def download(
             }
             dump(payload, f)
             f.write('\n')
+            f.flush()
 
             if indx == messages - 1:
                 break

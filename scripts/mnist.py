@@ -44,11 +44,12 @@ def bench(
     topic: str = Option(...),
     brokers: List[str] = Option(...),
 ):
+    print(f'Bench startup time: {time()}')
     total_messages = 0
 
     for stage in range(1, 5):
-        messages = 1_000
-        batch_sleep = 0.1 / (stage * 2)
+        messages = 100
+        batch_sleep = 1 / stage
         total_messages += messages
 
         kafka(topic, brokers,messages=messages, batch_sleep=batch_sleep)

@@ -1,0 +1,56 @@
+include:
+- funnel/*
+kind: ArchiveUploadSpec
+name: funnel-0pFS
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: funnel-cloud-output-c88750ed-9de4-4082-8faa-3f5ba66ce440
+spec:
+  deployment:
+    checksum: {}
+  environment:
+    name: python
+    namespace: ""
+  source:
+    checksum: {}
+    type: url
+    url: archive://funnel-0pFS
+status:
+  buildstatus: pending
+  lastUpdateTimestamp: "2023-03-27T10:53:59Z"
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: funnel-cloud-output
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: newdeploy
+      MaxScale: 10
+      MinScale: 1
+      SpecializationTimeout: 120
+      TargetCPUPercent: 0
+    StrategyType: execution
+  concurrency: 500
+  configmaps:
+  - name: inference
+    namespace: ""
+  environment:
+    name: python
+    namespace: ""
+  functionTimeout: 60
+  idletimeout: 120
+  package:
+    functionName: __init__.main
+    packageref:
+      name: funnel-cloud-output-c88750ed-9de4-4082-8faa-3f5ba66ce440
+      namespace: ""
+  requestsPerPod: 1
+  resources: {}

@@ -1,0 +1,95 @@
+# Config maps for Fission functions
+# $ kubectl create -f config_map.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: default
+  name: inference
+data:
+  edge: |-
+    {
+      "exit": {
+        "url": "http://router.fission/funnel-edge-output"
+      },
+      "next": {
+        "url": "http://router.fission/funnel-fog-input",
+        "confidence": 0.50
+      },
+      "model": "edge.h5"
+    }
+  funnel-edge-output: |-
+    {
+      "topic": "fission.inference.edge-output",
+      "producer":{
+        "bootstrap_servers": [
+          "192.168.49.179:32001"
+        ]
+      }
+    }
+  funnel-fog-input: |-
+    {
+      "topic": "fission.inference.fog-input",
+      "producer":{
+        "bootstrap_servers": [
+          "192.168.48.206:32001"
+        ]
+      }
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-connector-fission-edge-input-config
+data:
+  config.json: |-
+    {
+      "concurrency": 4096,
+      "topic": "fission.inference.edge-input",
+      "groupid": "fission.inference.edge-input",
+      "brokers": [
+        "kafka.kafka:9092"
+      ],
+      "callback": {
+        "url": "http://router.fission/edge",
+        "options": {
+          "method": "POST",
+          "keepalive": true
+        }
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connector-fission-edge-input
+  labels:
+    name: kafka-connector-fission-edge-input
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kafka-connector-fission-edge-input
+  template:
+    metadata:
+      labels:
+        name: kafka-connector-fission-edge-input
+    spec:
+      containers:
+        - name: connector
+          image: 192.168.43.7:30501/kafka-connector-arm:0.0.17
+          imagePullPolicy: Always
+          env:
+            - name: KAFKAC_CLIENTID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/kafkac"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: kafka-connector-fission-edge-input-config

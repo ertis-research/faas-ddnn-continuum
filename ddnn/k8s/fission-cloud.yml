@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: default
+  name: inference
+data:
+  cloud: |-
+    {
+      "exit": {
+        "url": "http://router.fission/funnel-cloud-output"
+      },
+      "model": "cloud.h5"
+    }
+  funnel-cloud-output: |-
+    {
+      "topic": "fission.inference.cloud-output",
+      "producer":{
+        "bootstrap_servers": [
+          "192.168.49.179:32001"
+        ]
+      }
+    }
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-connector-fission-cloud-input-config
+data:
+  config.json: |-
+    {
+      "concurrency": 4096,
+      "topic": "fission.inference.cloud-input",
+      "groupid": "fission.inference.cloud-input",
+      "brokers": [
+        "kafka-0.kafka-headless.kafka:9092",
+        "kafka-1.kafka-headless.kafka:9092"
+      ],
+      "callback": {
+        "url": "http://router.fission/cloud",
+        "options": {
+          "method": "POST",
+          "keepalive": true
+        }
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connector-fission-cloud-input
+  labels:
+    name: kafka-connector-fission-cloud-input
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kafka-connector-fission-cloud-input
+  template:
+    metadata:
+      labels:
+        name: kafka-connector-fission-cloud-input
+    spec:
+      containers:
+        - name: connector
+          image: 10.10.32.232:30501/kafka-connector:0.0.17
+          imagePullPolicy: Always
+          env:
+            - name: KAFKAC_CLIENTID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/kafkac"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: kafka-connector-fission-cloud-input-config

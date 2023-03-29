@@ -1,0 +1,62 @@
+include:
+- inference/*
+kind: ArchiveUploadSpec
+name: inference-WXLj
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: edge-59166f93-b609-4936-9b1b-59f27207c6d2
+spec:
+  deployment:
+    checksum: {}
+  environment:
+    name: tensorflow
+    namespace: ""
+  source:
+    checksum: {}
+    type: url
+    url: archive://inference-WXLj
+status:
+  buildstatus: pending
+  lastUpdateTimestamp: "2023-03-28T10:27:24Z"
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: edge
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: newdeploy
+      MaxScale: 20
+      MinScale: 1
+      SpecializationTimeout: 120
+      TargetCPUPercent: 0
+    StrategyType: execution
+  concurrency: 500
+  configmaps:
+  - name: inference
+    namespace: ""
+  environment:
+    name: tensorflow
+    namespace: ""
+  functionTimeout: 60
+  idletimeout: 120
+  package:
+    functionName: __init__.main
+    packageref:
+      name: edge-59166f93-b609-4936-9b1b-59f27207c6d2
+      namespace: ""
+  requestsPerPod: 1
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 500m
+      memory: 512Mi

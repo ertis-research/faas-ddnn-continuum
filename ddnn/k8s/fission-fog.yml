@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: default
+  name: inference
+data:
+  fog: |-
+    {
+      "exit": {
+        "url": "http://router.fission/funnel-fog-output"
+      },
+      "next": {
+        "url": "http://router.fission/funnel-cloud-input",
+        "confidence": 0.50
+      },
+      "model": "fog.h5"
+    }
+  funnel-fog-output: |-
+    {
+      "topic": "fission.inference.fog-output",
+      "producer":{
+        "bootstrap_servers": [
+          "192.168.49.179:32001"
+        ]
+      }
+    }
+  funnel-cloud-input: |-
+    {
+      "topic": "fission.inference.cloud-input",
+      "producer":{
+        "bootstrap_servers": [
+          "192.168.43.7:32001"
+        ]
+      }
+    }
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-connector-fission-fog-input-config
+data:
+  config.json: |-
+    {
+      "concurrency": 4096,
+      "topic": "fission.inference.fog-input",
+      "groupid": "fission.inference.fog-input",
+      "brokers": [
+        "kafka.kafka:9092"
+      ],
+      "callback": {
+        "url": "http://router.fission/fog",
+        "options": {
+          "method": "POST",
+          "keepalive": true
+        }
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connector-fission-fog-input
+  labels:
+    name: kafka-connector-fission-fog-input
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kafka-connector-fission-fog-input
+  template:
+    metadata:
+      labels:
+        name: kafka-connector-fission-fog-input
+    spec:
+      containers:
+        - name: connector
+          image: 192.168.43.7:30501/kafka-connector:0.0.17
+          imagePullPolicy: Always
+          env:
+            - name: KAFKAC_CLIENTID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/kafkac"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: kafka-connector-fission-fog-input-config

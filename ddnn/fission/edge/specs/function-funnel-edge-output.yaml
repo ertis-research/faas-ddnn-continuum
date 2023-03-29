@@ -1,0 +1,30 @@
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: funnel-edge-output
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: newdeploy
+      MaxScale: 10
+      MinScale: 1
+      SpecializationTimeout: 120
+      TargetCPUPercent: 0
+    StrategyType: execution
+  concurrency: 500
+  configmaps:
+  - name: inference
+    namespace: ""
+  environment:
+    name: python
+    namespace: ""
+  functionTimeout: 60
+  idletimeout: 120
+  package:
+    functionName: __init__.main
+    packageref:
+      name: funnel
+      namespace: ""
+  requestsPerPod: 1
+  resources: {}

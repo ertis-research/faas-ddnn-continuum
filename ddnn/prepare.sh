@@ -44,7 +44,7 @@ function fission {
     values="$k8s_dir/fission/$name.yml"
 
     kubectl create namespace fission || true
-    kubectl create -k "github.com/fission/fission/crds/v1?ref=v1.18.0"
+    kubectl create -k "github.com/fission/fission/crds/v1?ref=v1.18.0" || true
 
     helm upgrade fission fission-charts/fission-all --install --version v1.18.0 --namespace fission -f "$values"
 }
@@ -52,6 +52,7 @@ function fission {
 function uninstall_fission {
     name="$1"
 
+    kubectl delete -k "github.com/fission/fission/crds/v1?ref=v1.18.0"
     helm uninstall fission --namespace fission
 }
 ################################################################################
@@ -82,14 +83,22 @@ export $(cat "$env_file" | xargs)
 
 set -xeo pipefail
 
-uninstall_kafka "$name"
-# uninstall_openfaas "$name" 
-# uninstall_k8s "openfaas-$name" "$k8s_dir"
-# sleep 10
-
-kafka "$name" "$k8s_dir"
-#openfaas "$name" "$k8s_dir"
-#sleep 10
-#k8s "openfaas-$name" "$k8s_dir"
-
-
+while getopts 'kKoOfFn:' c
+do
+  # echo "Processing $c : OPTIND is $OPTIND"
+  case $c in
+    n) name="$OPTARG" ;;
+    k) kafka "$name" "$k8s_dir" ;;
+    K) uninstall_kafka "$name" ;;
+    o) openfaas "$name" "$k8s_dir" && k8s "openfaas-$name" "$k8s_dir" ;;
+    O) uninstall_openfaas "$name" && uninstall_k8s "openfaas-$name" "$k8s_dir" ;;
+    f) fission "$name" "$k8s_dir" && k8s "fission-$name" "$k8s_dir" ;;
+    F) uninstall_fission "$name" && uninstall_k8s "fission-$name" "$k8s_dir" ;;
+    *) 
+        echo "USAGE -n LAYER_NAME"
+        echo "-k/-K\tinstall/uninstall kafka"
+        echo "-o/-O\tinstall/uninstall Openfaas"
+        echo "-f/-F\tinstall/uninstall Fission"
+        ;;
+  esac
+done

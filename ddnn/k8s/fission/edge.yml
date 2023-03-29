@@ -1,3 +1,6 @@
+router:
+  deployAsDaemonSet: true
+
 persistence:
   enabled: false
 # Enable logs

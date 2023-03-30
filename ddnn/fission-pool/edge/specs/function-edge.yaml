@@ -1,0 +1,56 @@
+include:
+- inference/*
+kind: ArchiveUploadSpec
+name: inference-Vy2m
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: edge-11d56385-fe5f-4384-a0c3-18dee1708ac5
+spec:
+  deployment:
+    checksum: {}
+  environment:
+    name: tensorflow
+    namespace: ""
+  source:
+    checksum: {}
+    type: url
+    url: archive://inference-Vy2m
+status:
+  buildstatus: pending
+  lastUpdateTimestamp: "2023-03-30T09:11:36Z"
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: edge
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: poolmgr
+      MaxScale: 0
+      MinScale: 0
+      SpecializationTimeout: 120
+      TargetCPUPercent: 0
+    StrategyType: execution
+  concurrency: 500
+  configmaps:
+  - name: inference
+    namespace: ""
+  environment:
+    name: tensorflow
+    namespace: ""
+  functionTimeout: 60
+  idletimeout: 120
+  package:
+    functionName: __init__.main
+    packageref:
+      name: edge-11d56385-fe5f-4384-a0c3-18dee1708ac5
+      namespace: ""
+  requestsPerPod: 1
+  resources: {}

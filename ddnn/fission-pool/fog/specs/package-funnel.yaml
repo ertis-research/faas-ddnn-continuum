@@ -1,0 +1,24 @@
+include:
+- funnel/*
+kind: ArchiveUploadSpec
+name: funnel-HedJ
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: funnel
+spec:
+  deployment:
+    checksum: {}
+  environment:
+    name: python
+    namespace: ""
+  source:
+    checksum: {}
+    type: url
+    url: archive://funnel-HedJ
+status:
+  buildstatus: pending
+  lastUpdateTimestamp: "2023-03-30T09:17:41Z"

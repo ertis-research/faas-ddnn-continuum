@@ -1,0 +1,28 @@
+apiVersion: fission.io/v1
+kind: Environment
+metadata:
+  creationTimestamp: null
+  name: tensorflow
+spec:
+  builder:
+    command: build
+    container:
+      name: ""
+      resources: {}
+    image: ghcr.io/ertis-research/tensorflow-arm-builder:v0.0.6
+  imagepullsecret: ""
+  keeparchive: false
+  poolsize: 3
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  runtime:
+    container:
+      name: ""
+      resources: {}
+    image: ghcr.io/ertis-research/tensorflow-arm-env:v0.0.6
+  version: 3

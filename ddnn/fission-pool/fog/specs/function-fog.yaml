@@ -1,0 +1,56 @@
+include:
+- inference/*
+kind: ArchiveUploadSpec
+name: inference-FMWv
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: fog-749e4603-407c-4467-92f2-1d0b1ab1e13d
+spec:
+  deployment:
+    checksum: {}
+  environment:
+    name: tensorflow
+    namespace: ""
+  source:
+    checksum: {}
+    type: url
+    url: archive://inference-FMWv
+status:
+  buildstatus: pending
+  lastUpdateTimestamp: "2023-03-30T09:17:41Z"
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: fog
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: poolmgr
+      MaxScale: 0
+      MinScale: 0
+      SpecializationTimeout: 120
+      TargetCPUPercent: 0
+    StrategyType: execution
+  concurrency: 500
+  configmaps:
+  - name: inference
+    namespace: ""
+  environment:
+    name: tensorflow
+    namespace: ""
+  functionTimeout: 60
+  idletimeout: 120
+  package:
+    functionName: __init__.main
+    packageref:
+      name: fog-749e4603-407c-4467-92f2-1d0b1ab1e13d
+      namespace: ""
+  requestsPerPod: 1
+  resources: {}

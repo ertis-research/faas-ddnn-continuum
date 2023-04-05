@@ -1,6 +1,7 @@
 *.local.*
 *.local
 .vscode
+.idea
 
 # Python packages
 .venv

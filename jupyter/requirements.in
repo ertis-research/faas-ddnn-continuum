@@ -1,4 +1,6 @@
 polars
 notebook
-matplotlib
 pyarrow
+plotly
+pandas
+kaleido

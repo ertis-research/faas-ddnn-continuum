@@ -9,7 +9,6 @@ functions:
     image: ${DOCKER_PREFIX:-registry.hub.docker.com}/cloud:latest
     label:
       com.openfaas.scale.max: 20
-      com.openfaas.scale.factor: 50%
     environment:
       MODEL: "function/cloud.h5"
       EXIT_URL: http://gateway.openfaas:8080/function/funnel-cloud-output

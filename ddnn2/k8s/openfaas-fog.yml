@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-connector-openfaas-fog-input-config
+data:
+  config.json: |-
+    {
+      "concurrency": 4096,
+      "topic": "openfaas.inference.fog-input",
+      "groupid": "openfaas.inference.fog-input",
+      "brokers": [
+        "kafka.kafka:9092"
+      ],
+      "callback": {
+        "url": "http://gateway.openfaas:8080/function/fog",
+        "options": {
+          "method": "POST",
+          "keepalive": true
+        }
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connector-openfaas-fog-input
+  labels:
+    name: kafka-connector-openfaas-fog-input
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kafka-connector-openfaas-fog-input
+  template:
+    metadata:
+      labels:
+        name: kafka-connector-openfaas-fog-input
+    spec:
+      containers:
+        - name: connector
+          image: 192.168.43.7:30501/kafka-connector:0.0.17
+          imagePullPolicy: Always
+          env:
+            - name: KAFKAC_CLIENTID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/kafkac"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: kafka-connector-openfaas-fog-input-config

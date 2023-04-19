@@ -1,0 +1,8 @@
+router:
+  deployAsDaemonSet: true
+
+persistence:
+  enabled: false
+# Enable logs
+influxdb:
+  enabled: true

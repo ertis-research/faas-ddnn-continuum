@@ -58,6 +58,7 @@ function uninstall_fission {
 ################################################################################
 function kafka {
     name="$1"
+    k8s_dir="$2"
 
     values_kafka="$k8s_dir/kafka/$name.yml"
     

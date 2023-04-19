@@ -1,0 +1,53 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://${DDNN_FOG_IP}:${DDNN_FOG_OPENFAAS_NODEPORT}
+functions:
+  fog:
+    lang: python3-http-tensor
+    handler: ./fog
+    image: ${DOCKER_PREFIX:-registry.hub.docker.com}/fog:latest
+    label:
+      com.openfaas.scale.max: 20
+    environment:
+      MODEL: "function/fog.h5"
+      EXIT_URL: http://gateway.openfaas:8080/function/funnel-fog-output
+      NEXT_URL: http://gateway.openfaas:8080/function/funnel-cloud-input
+      NEXT_CONFIDENCE: .50
+
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 1000m
+      memory: 1024Mi
+
+  funnel-fog-output:
+    lang: python3-http
+    handler: ./funnel
+    image: ${DOCKER_PREFIX:-registry.hub.docker.com}/funnel:latest
+    label:
+      com.openfaas.scale.max: 10
+    environment:
+      FUNNEL_TOPIC: openfaas.inference.fog-output
+      FUNNEL_PRODUCER: >
+        {
+          "bootstrap_servers": [
+              "${DDNN_FOG_IP}:${DDNN_FOG_KAFKA_NODEPORT1}"
+            ]
+        }
+
+  funnel-cloud-input:
+    lang: python3-http
+    handler: ./funnel
+    image: ${DOCKER_PREFIX:-registry.hub.docker.com}/funnel:latest
+    label:
+      com.openfaas.scale.max: 10
+    environment:
+      FUNNEL_TOPIC: openfaas.inference.cloud-input
+      FUNNEL_PRODUCER: >
+        {
+          "bootstrap_servers": [
+              "${DDNN_CLOUD_IP}:${DDNN_CLOUD_KAFKA_NODEPORT1}"
+            ]
+        }

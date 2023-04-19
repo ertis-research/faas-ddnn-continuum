@@ -11,13 +11,32 @@
 
 ```sh
 for i in {1..5}
-done
+do
   .venv/bin/python scripts/mnist.py bench --brokers=192.168.48.206:32001 --topic=openfaas.inference.fog-input &
 done
 wait
 
 .venv/bin/python scripts/kafka.py --topics=openfaas.inference.{fog,cloud}-output --brokers=192.168.48.206:32001 --output=ddnn2/benchmark/openfaas5.json --messages=2000
 ```
+
+- Stage 2: 2 replicas a 3.
+- Stage 3: 4 replicas
+- Stage 5: 5 replicas
+
+## 10 IoT
+
+```sh
+for i in {1..10}
+do
+  .venv/bin/python scripts/mnist.py bench --brokers=192.168.48.206:32001 --topic=openfaas.inference.fog-input &
+done
+wait
+
+.venv/bin/python scripts/kafka.py --topics=openfaas.inference.{fog,cloud}-output --brokers=192.168.48.206:32001 --output=ddnn2/benchmark/openfaas10.json --messages=4000
+```
+
+- Stage 1: 3 fog, despues a 4, despues 5
+- Stage 4: Funnel fog output 2 y funnel cloud input 2
 
 # Fission
 

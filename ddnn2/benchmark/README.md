@@ -7,6 +7,22 @@
 .venv/bin/python scripts/kafka.py --topics=openfaas.inference.{fog,cloud}-output --brokers=192.168.48.206:32001 --output=ddnn2/benchmark/openfaas.json --messages=400
 ```
 
+## 3 IoT
+
+```sh
+for i in {1..3}
+do
+  .venv/bin/python scripts/mnist.py bench --brokers=192.168.48.206:32001 --topic=openfaas.inference.fog-input &
+done
+wait
+
+.venv/bin/python scripts/kafka.py --topics=openfaas.inference.{fog,cloud}-output --brokers=192.168.48.206:32001 --output=ddnn2/benchmark/openfaas3.json --messages=1200
+```
+
+- Stage 2: 2 replicas inference. Then 3
+- Stage 3: 4 replicas
+- Stage 4: 5 replicas
+
 ## 5 IoT
 
 ```sh
@@ -46,6 +62,20 @@ wait
 .venv/bin/python scripts/mnist.py bench --brokers=192.168.48.206:32001 --topic=fission.inference.fog-input
 .venv/bin/python scripts/kafka.py --topics=fission.inference.{fog,cloud}-output --brokers=192.168.48.206:32001 --output=ddnn/benchmark/fission-newdeploy-min1.json --messages=400
 ```
+
+## 3 IoT
+
+```sh
+for i in {1..3}
+do
+  .venv/bin/python scripts/mnist.py bench --brokers=192.168.48.206:32001 --topic=fission.inference.fog-input &
+done
+wait
+
+.venv/bin/python scripts/kafka.py --topics=fission.inference.{fog,cloud}-output --brokers=192.168.48.206:32001 --output=ddnn2/benchmark/fission3-newdeploy-min1.json --messages=1200
+```
+
+- Stage 3: 2 fog replicas
 
 ## 5 IoT
 

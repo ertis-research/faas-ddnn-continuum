@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kafkaml
+  namespace: kafkaml
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: kafkaml-role
+  namespace: kafkaml
+rules:
+  - apiGroups: ["", "apps", "batch"]
+    resources:
+      - deployments
+      - jobs
+      - pods
+      - replicasets
+      - services
+      - replicationcontrollers
+    verbs: ["create", "get", "list", "delete", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kafkaml-rolebinding
+  namespace: kafkaml
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: kafkaml-role
+subjects:
+  - kind: ServiceAccount
+    name: kafkaml

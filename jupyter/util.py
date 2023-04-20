@@ -1,7 +1,6 @@
 from util import *
 from typing import Tuple
 import plotly.express as px
-import plotly.io as pio
 import polars as pl
 
 def normalize_data(df: pl.LazyFrame) -> pl.LazyFrame:

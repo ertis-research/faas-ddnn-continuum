@@ -114,6 +114,8 @@ wait
 .venv/bin/python scripts/kafka.py --topics=kafkaml.inference.{fog-output,output-cloud} --brokers=192.168.48.206:32001 --output=ddnn2/benchmark/kafkaml.json --messages=400
 ```
 
+- Benchmark start: `1682071612.1225128`
+
 ## 3 IoT
 
 ```sh
@@ -126,6 +128,8 @@ wait
 .venv/bin/python scripts/kafka.py --topics=kafkaml.inference.{fog-output,output-cloud} --brokers=192.168.48.206:32001 --output=ddnn2/benchmark/kafkaml3.json --messages=1200
 ```
 
+- Benchmark start: `1682072010.837343`
+
 ## 5 IoT
 
 ```sh
@@ -137,3 +141,5 @@ wait
 
 .venv/bin/python scripts/kafka.py --topics=kafkaml.inference.{fog-output,output-cloud} --brokers=192.168.48.206:32001 --output=ddnn2/benchmark/kafkaml5.json --messages=2000
 ```
+
+- Benchmark start: `1682072307.7277372`

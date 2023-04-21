@@ -50,6 +50,7 @@ def bench(
     brokers: List[str] = Option(...),
     raw: bool = False,
 ):
+    from tensorflow import keras
     print(f'Bench startup time: {time()}')
     total_messages = 0
 

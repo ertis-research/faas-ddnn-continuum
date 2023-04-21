@@ -15,10 +15,15 @@ def mnist():
     from tensorflow import keras
     return keras.datasets.mnist.load_data()
 
+def payload_raw(start:int, end:int):
+    (x_train, y_train), (test, y_test) = mnist()
+    value = test[start:end]
+    return value[0].tobytes()
+
 def payload(start: int, end: int):    
     (x_train, y_train), (test, y_test) = mnist()
     value = test[start:end]
-    return dumps(value, cls=NumpyEncoder)
+    return dumps(value, cls=NumpyEncoder).encode()
 
 app = Typer()
 
@@ -28,12 +33,12 @@ def json(blocksize: int = 1, offset: int = 0):
     print(p)
 
 @app.command()
-def kafka(topic: str, brokers: List[str], batch_size: int = 1, offset: int = 0, messages: int = 5, batch_sleep: float = 0):
+def kafka(topic: str, brokers: List[str], batch_size: int = 1, offset: int = 0, messages: int = 5, batch_sleep: float = 0, payload_fn=payload):
     producer = KafkaProducer(bootstrap_servers=brokers)
 
     for i in range(messages):
-        p = payload(offset + i * batch_size, offset + (1 + i * batch_size))
-        producer.send(topic, p.encode(), key=str(uuid4()).encode(), headers=[("X-INFERENCE-TS", str(time()).encode())])
+        p = payload_fn(offset + i * batch_size, offset + (1 + i * batch_size))
+        producer.send(topic, p, key=str(uuid4()).encode(), headers=[("X-INFERENCE-TS", str(time()).encode())])
         producer.flush()
         sleep(batch_sleep)
     
@@ -43,6 +48,7 @@ def kafka(topic: str, brokers: List[str], batch_size: int = 1, offset: int = 0, 
 def bench(
     topic: str = Option(...),
     brokers: List[str] = Option(...),
+    raw: bool = False,
 ):
     print(f'Bench startup time: {time()}')
     total_messages = 0
@@ -52,7 +58,8 @@ def bench(
         batch_sleep = 1 / stage
         total_messages += messages
 
-        kafka(topic, brokers,messages=messages, batch_sleep=batch_sleep)
+        payload_fn = payload_raw if raw else payload
+        kafka(topic, brokers,messages=messages, batch_sleep=batch_sleep,payload_fn=payload_fn)
         print({
             'stage': stage,
             'messages': messages,

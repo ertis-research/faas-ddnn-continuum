@@ -25,7 +25,7 @@ def download(
                 'partition': msg.partition,
                 'offset': msg.offset,
                 'timestamp': msg.timestamp,
-                'key': msg.key.decode(),
+                'key': msg.key.decode() if msg.key else None,
                 'first_timestamp': [(k,v.decode()) for k,v in msg.headers],
                 # Value is meaningless and takes too much disk space
                 # 'value': msg.value.decode()

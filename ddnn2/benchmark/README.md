@@ -104,3 +104,36 @@ wait
 ```
 
 - Stage 1: 2 replicas for inference on fog
+
+# Kafkaml
+
+## 1 IoT
+
+```sh
+.venv/bin/python scripts/mnist.py bench --brokers=192.168.48.206:32001 --topic=kafkaml.inference.fog-input --raw
+.venv/bin/python scripts/kafka.py --topics=kafkaml.inference.{fog-output,output-cloud} --brokers=192.168.48.206:32001 --output=ddnn2/benchmark/kafkaml.json --messages=400
+```
+
+## 3 IoT
+
+```sh
+for i in {1..3}
+do
+  .venv/bin/python scripts/mnist.py bench --brokers=192.168.48.206:32001 --topic=kafkaml.inference.fog-input --raw &
+done
+wait
+
+.venv/bin/python scripts/kafka.py --topics=kafkaml.inference.{fog-output,output-cloud} --brokers=192.168.48.206:32001 --output=ddnn2/benchmark/kafkaml3.json --messages=1200
+```
+
+## 5 IoT
+
+```sh
+for i in {1..5}
+do
+  .venv/bin/python scripts/mnist.py bench --brokers=192.168.48.206:32001 --topic=kafkaml.inference.fog-input --raw &
+done
+wait
+
+.venv/bin/python scripts/kafka.py --topics=kafkaml.inference.{fog-output,output-cloud} --brokers=192.168.48.206:32001 --output=ddnn2/benchmark/kafkaml5.json --messages=2000
+```

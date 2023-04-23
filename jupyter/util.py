@@ -56,7 +56,7 @@ def plot_request_latency(values: Dict[str, pl.DataFrame]):
         )
     fig.update_layout(
         xaxis_title="Seconds since the start of the benchmark",
-        yaxis_title="Response time latency (in seconds)"
+        yaxis_title="Response time latency (in seconds)",
     )
     return fig
 
@@ -67,6 +67,7 @@ def plot_latency_box(values: Dict[str, pl.DataFrame]):
         fig.add_box(y=df["difference"], name=k)
     fig.update_layout(
         xaxis_title="Serverless platform layer",
-        yaxis_title="Response time (in seconds)"
+        yaxis_title="Response time (in seconds)",
+        showlegend=False,
     )
     return fig

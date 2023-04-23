@@ -1,7 +1,8 @@
-from util import *
-from typing import Tuple
+from typing import Dict
+
 import plotly.express as px
 import polars as pl
+
 
 def normalize_data(df: pl.LazyFrame) -> pl.LazyFrame:
     benchmark_start = df.select(pl.col("timestamp").min() / 1_000).collect()
@@ -18,7 +19,16 @@ def normalize_data(df: pl.LazyFrame) -> pl.LazyFrame:
         (pl.col("timestamp") - benchmark_start).alias("timestamp_relative")
     ])
 
-def get_basic_stats(df: pl.DataFrame) -> pl.DataFrame:
+
+def normalize_data_kafkaml(df: pl.LazyFrame) -> pl.LazyFrame:
+    return df.with_column(pl.col("timestamp") / 1_000)
+
+
+def elapsed(df: pl.DataFrame) -> float:
+    return df.select(pl.col("timestamp").max() - pl.col("timestamp").min()).item()
+
+
+def get_stats(df: pl.DataFrame) -> pl.DataFrame:
     return df.groupby("topic").agg([
         pl.col("difference").max().alias("max"),
         pl.col("difference").min().alias("min"),
@@ -28,41 +38,22 @@ def get_basic_stats(df: pl.DataFrame) -> pl.DataFrame:
         pl.col("topic").count().alias("samples"),
     ])
 
-def plot_stats(stats: pl.DataFrame):
-    df = stats.to_pandas()  # Expensive operation, but simplifies code a lot
-    fig = px.bar(
-        df,
-        x="topic", y=["max", "avg", "median", "std","min"],
-        barmode='group',
-        labels={
-            "value": "Latency (in seconds)",
-            "topic": "Kafka topic"
-        }
-    )
-    return fig
-def divide_by_topics(df: pl.DataFrame) -> Tuple[pl.DataFrame, pl.DataFrame, pl.DataFrame]:
+
+def divide_by_topics(df: pl.DataFrame) -> dict[str, pl.DataFrame]:
     edge = df.filter(pl.col("topic").str.ends_with("edge-output"))
     fog = df.filter(pl.col("topic").str.ends_with("fog-output"))
     cloud = df.filter(pl.col("topic").str.ends_with("cloud-output"))
-    return edge, fog, cloud
+    return {"edge": edge, "fog": fog, "cloud": cloud}
 
 
-def plot_latency_on_topics_over_time(edge: pl.DataFrame, fog: pl.DataFrame, cloud: pl.DataFrame):
+def plot_request_latency(values: Dict[str, pl.DataFrame]):
     fig = px.scatter()
-    fig.add_scatter(
-        name="edge",
-        x=edge["timestamp_relative"],
-        y=edge["difference"],
-    ).add_scatter(
-        name="fog",
-        x=fog["timestamp_relative"],
-        y=fog["difference"],
-    ).add_scatter(
-        name="cloud",
-        x=cloud["timestamp_relative"],
-        y=cloud["difference"],
-    )
-
+    for k, df in values.items():
+        fig.add_scatter(
+            name=k,
+            x=df["timestamp_relative"],
+            y=df["difference"],
+        )
     fig.update_layout(
         xaxis_title="Seconds since the start of the benchmark",
         yaxis_title="Response time latency (in seconds)"
@@ -70,13 +61,12 @@ def plot_latency_on_topics_over_time(edge: pl.DataFrame, fog: pl.DataFrame, clou
     return fig
 
 
-def plot_performance_comparison_box(openfaas: pl.DataFrame, fission: pl.DataFrame):
+def plot_latency_box(values: Dict[str, pl.DataFrame]):
     fig = px.box()
-    fig.add_box(y=openfaas["difference"], name="openfaas")
-    fig.add_box(y=fission["difference"], name="fission")
+    for k, df in values.items():
+        fig.add_box(y=df["difference"], name=k)
     fig.update_layout(
-        xaxis_title="Serverless platforms",
+        xaxis_title="Serverless platform layer",
         yaxis_title="Response time (in seconds)"
     )
     return fig
-

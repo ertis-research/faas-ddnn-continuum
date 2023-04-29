@@ -1,10 +1,6 @@
-import { Kafka, logLevel } from "npm:kafkajs@2.2.4";
-import {
-  getConfig,
-  EnvExtractor,
-  JsonExtractor,
-} from "https://deno.land/x/chimera@v1.1.0/mod.ts";
-import { z } from "https://deno.land/x/zod@v3.21.0/mod.ts";
+import {Kafka, logLevel} from "npm:kafkajs@2.2.4";
+import {EnvExtractor, getConfig, JsonExtractor,} from "https://deno.land/x/chimera/mod.ts";
+import {z} from "https://deno.land/x/zod@v3.21.0/mod.ts";
 import * as log from "https://deno.land/std@0.151.0/log/mod.ts";
 
 const CONFIG_SCHEME = z.object({

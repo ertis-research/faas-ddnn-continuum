@@ -9,19 +9,40 @@ def normalize_data(df: pl.LazyFrame) -> pl.LazyFrame:
     return df.select([
         pl.col("topic"),
         pl.col("key"),
-        # milliseconds to seconds
+        # Message written on output topic. Milliseconds to seconds
         pl.col("timestamp") / 1_000,
-        # Unix time in seconds
+        # When the message was first sent to Kafka. Unix time in seconds
         pl.col("first_timestamp").flatten().arr.get(1).cast(pl.Float64)
     ]).select([
         pl.all(),
+        # Time elapsed between sending the request and receiving the result
         (pl.col("timestamp") - pl.col("first_timestamp")).alias("difference"),
+        # Seconds since the start of the benchmark
         (pl.col("timestamp") - benchmark_start).alias("timestamp_relative")
     ])
 
 
-def normalize_data_kafkaml(df: pl.LazyFrame) -> pl.LazyFrame:
-    return df.with_column(pl.col("timestamp") / 1_000)
+def normalize_data_kafkaml(df: pl.LazyFrame, benchmark_start: float, clients=1) -> pl.LazyFrame:
+    # Get approximated values
+    values = []
+    last = 0
+    for stage in range(1, 5):
+        for message in range(100):
+            last = last + (1 / stage) # + .012 # TODO simulated latency between messages
+            for client in range(clients):
+                values.append(last)
+    base = pl.DataFrame({"first_timestamp": values}) + benchmark_start
+
+    return (
+        df.with_column((pl.col("timestamp") / 1_000))
+        .sort("timestamp")
+        .with_row_count("indx")
+        .join(base.lazy().with_row_count("indx"), on="indx")
+        .with_column((pl.col("timestamp") - pl.col("timestamp").min()).alias("timestamp_relative"))
+        # Time elapsed between sending the request and receiving the result
+        .with_column((pl.col("timestamp") - pl.col("first_timestamp")).alias("difference"))
+        .with_column(pl.col("difference") - pl.col("difference").min())
+    )
 
 
 def elapsed(df: pl.DataFrame) -> float:
@@ -40,9 +61,9 @@ def get_stats(df: pl.DataFrame) -> pl.DataFrame:
 
 
 def divide_by_topics(df: pl.DataFrame) -> dict[str, pl.DataFrame]:
-    edge = df.filter(pl.col("topic").str.ends_with("edge-output"))
-    fog = df.filter(pl.col("topic").str.ends_with("fog-output"))
-    cloud = df.filter(pl.col("topic").str.ends_with("cloud-output"))
+    edge = df.filter(pl.col("topic").str.contains("edge"))
+    fog = df.filter(pl.col("topic").str.contains("fog"))
+    cloud = df.filter(pl.col("topic").str.contains("cloud"))
     return {"edge": edge, "fog": fog, "cloud": cloud}
 
 

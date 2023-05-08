@@ -1,0 +1,4 @@
+{
+  "backend": "http://backend.kafkaml:8000",
+  "model": "1"
+}

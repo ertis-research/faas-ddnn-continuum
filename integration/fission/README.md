@@ -4,9 +4,9 @@ Integration between Fission and Kafka-ML
 
 ```sh
 # Build the image
-docker build -t inference-env .
+docker build -t inference-env environment
 # Create the environment
 fission env create --image inference-env --name tensorflow --poolsize=0 --version=3
 # Create the function
-fission fn create --name example --env tensorflow --deployarchive 'model.h5' --executortype newdeploy
+fission fn create --name example --env tensorflow --deployarchive 'config.json' --entrypoint 'config.json' --executortype newdeploy
 ```

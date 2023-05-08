@@ -1,2 +1,4 @@
 bjoern
 Flask
+requests
+pydantic

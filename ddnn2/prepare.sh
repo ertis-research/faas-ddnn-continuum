@@ -27,7 +27,7 @@ function openfaas {
 
     kubectl create namespace openfaas || true
     kubectl create namespace openfaas-fn || true
-    helm upgrade openfaas --install openfaas/openfaas --namespace openfaas -f "$values"
+    helm upgrade openfaas --install openfaas/openfaas --namespace openfaas -f "$values" --version v12.0.2
 }
 
 function uninstall_openfaas {
@@ -63,7 +63,7 @@ function kafka {
     values_kafka="$k8s_dir/kafka/$name.yml"
     
     kubectl create namespace kafka || true
-    helm upgrade --install kafka bitnami/kafka --namespace kafka -f "$values_kafka"
+    helm upgrade --install kafka bitnami/kafka --namespace kafka -f "$values_kafka" --version v21.3.1
 }
 
 function uninstall_kafka {

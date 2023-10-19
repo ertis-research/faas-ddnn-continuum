@@ -1,2 +1,3 @@
 typer==0.7.0
 tensorflow
+kafka-python3==3.0.0

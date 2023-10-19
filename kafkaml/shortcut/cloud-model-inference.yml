@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels:
+    name: model-inference-2
+  name: model-inference-2
+  namespace: kafkaml
+spec:
+  replicas: 1
+  selector:
+    app: inference2
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: inference2
+    spec:
+      containers:
+        - env:
+            - name: INPUT_BOOTSTRAP_SERVERS
+              value: kafka-0.kafka-headless.kafka:9092,kafka-1.kafka-headless.kafka:9092
+            - name: OUTPUT_BOOTSTRAP_SERVERS
+              value: 192.168.48.206:32001
+            - name: UPPER_BOOTSTRAP_SERVERS
+              value: 192.168.48.206:32001
+            - name: MODEL_URL
+              value: http://192.168.43.7:8080/cloud.h5
+            - name: INPUT_FORMAT
+              value: RAW
+            - name: INPUT_CONFIG
+              value:
+                '{"data_type": "float32", "label_type": "uint8", "data_reshape":
+                "16", "label_reshape": "1"}'
+            - name: INPUT_TOPIC
+              value: kafkaml.inference2.input-cloud
+            - name: OUTPUT_TOPIC
+              value: kafkaml.inference2.output-cloud
+            - name: OUTPUT_UPPER
+            - name: GROUP_ID
+              value: inf1
+            - name: LIMIT
+              value: None
+          image: ertis/kafka-ml-tensorflow_model_inference:master
+          imagePullPolicy: Always
+          name: inference
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30

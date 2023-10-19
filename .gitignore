@@ -2,6 +2,7 @@
 *.local
 .vscode
 .idea
+bin/
 
 # Python packages
 .venv
